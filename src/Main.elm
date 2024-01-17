@@ -32,6 +32,7 @@ type alias Model =
     , research : List Exposition
     , route : Maybe String
     , expositions : Carousel Exposition
+    , display : Int
     }
 
 
@@ -40,7 +41,8 @@ init _ url navKey =
     ( { navKey = navKey
       , research = []
       , route = Url.Parser.parse urlParser url
-      , expositions = Carousel.create []
+      , expositions = Carousel.create [] 1
+      , display = 3
       }
     , sendQuery (Maybe.withDefault "Nothing" (Url.Parser.parse urlParser url))
     )
@@ -56,10 +58,10 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        ChangeUrl url ->
+        ChangeUrl _ ->
             ( model, Cmd.none )
 
-        RequestUrl urlRequest ->
+        RequestUrl _ ->
             ( model, Cmd.none )
 
         DataReceived (Ok expositions) ->
@@ -67,12 +69,12 @@ update msg model =
                 _ =
                     Debug.log "http-request" expositions
             in
-            ( { model | expositions = Carousel.create expositions }, Cmd.none )
+            ( { model | expositions = Carousel.create expositions model.display }, Cmd.none )
 
-        DataReceived (Err _) ->
+        DataReceived (Err error) ->
             let
                 _ =
-                    Debug.log "http-request" "fail"
+                    Debug.log "error" error
             in
             ( model, Cmd.none )
 
@@ -111,45 +113,23 @@ view model =
             (Carousel.view
                 { carousel = model.expositions
                 , onNext = NextExposition
-                , viewSlide = viewExposition
+                , viewSlide = viewResearch
+                , num = model.display - 1
                 }
             )
         ]
     }
 
 
-viewExposition : Maybe Exposition -> Element Msg
-viewExposition opt =
-    case opt of
-        Just options ->
-            Element.row [ width fill ]
-                [ paragraph
-                    [ Background.color (rgb255 0 250 160)
-                    , height fill
-                    ]
-                    [ Element.text (Maybe.withDefault "" options.thumb) ]
-                , Element.column
-                    [ width fill ]
-                    [ paragraph
-                        [ Background.color (rgb255 0 255 255)
-                        , height fill
-                        ]
-                        [ Element.text options.title ]
-                    , paragraph
-                        [ Background.color (rgb255 0 250 160)
-                        , height fill
-                        ]
-                        [ Element.text options.author.name ]
-                    , paragraph
-                        [ Element.height
-                            (fill |> maximum 100 |> minimum 100)
-                        , scrollbarY
-                        , Background.color (rgb255 160 250 100)
-                        ]
-                        [ Element.text options.abstract ]
-                    ]
-                , Input.button
-                    [ width shrink
+viewResearch : List (Maybe Exposition) -> List (Element Msg)
+viewResearch exp =
+    [ Element.column [ width fill ]
+        (List.concat
+            [ List.map
+                viewExposition
+                exp
+            , [ Input.button
+                    [ width fill
                     , Background.color (rgb255 0 255 144)
                     , Border.color (rgb255 0 0 0)
                     , Border.width 2
@@ -161,6 +141,47 @@ viewExposition opt =
                     { onPress = Just NextExposition
                     , label = Element.text " > "
                     }
+              ]
+            ]
+        )
+    ]
+
+
+viewExposition : Maybe Exposition -> Element Msg
+viewExposition exp =
+    case exp of
+        Just exposition ->
+            Element.row
+                [ width fill
+                , Border.color (rgb255 0 0 0)
+                , Border.width 2
+                , Border.rounded 3
+                ]
+                [ paragraph
+                    [ Background.color (rgb255 0 250 160)
+                    , height fill
+                    ]
+                    [ Element.text (Maybe.withDefault "" exposition.thumb) ]
+                , Element.column
+                    [ width fill ]
+                    [ paragraph
+                        [ Background.color (rgb255 0 255 255)
+                        , height fill
+                        ]
+                        [ Element.text exposition.title ]
+                    , paragraph
+                        [ Background.color (rgb255 0 250 160)
+                        , height fill
+                        ]
+                        [ Element.text exposition.author.name ]
+                    , paragraph
+                        [ Element.height
+                            (fill |> maximum 100 |> minimum 100)
+                        , scrollbarY
+                        , Background.color (rgb255 160 250 100)
+                        ]
+                        [ Element.text exposition.abstract ]
+                    ]
                 ]
 
         Nothing ->

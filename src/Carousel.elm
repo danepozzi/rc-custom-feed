@@ -7,7 +7,6 @@ module Carousel exposing
 
 import Array
 import Element exposing (..)
-import Html exposing (..)
 
 
 type Carousel slide
@@ -17,27 +16,34 @@ type Carousel slide
 type alias Internals slide =
     { index : Int
     , slides : List slide
+    , num : Int
     }
 
 
-create : List slide -> Carousel slide
-create slides =
+create : List slide -> Int -> Carousel slide
+create slides num =
     Carousel
         { index = 0
         , slides = slides
+        , num = num
         }
 
 
 next : Carousel slide -> Carousel slide
 next (Carousel internals) =
+    let
+        _ =
+            Debug.log "internals" internals
+    in
     Carousel
-        { internals | index = modBy (length internals) (internals.index + 1) }
+        { internals | index = modBy (length internals) (internals.index + internals.num) }
 
 
 view :
     { carousel : Carousel slide
     , onNext : msg
-    , viewSlide : Maybe slide -> Element msg
+    , viewSlide : List (Maybe slide) -> List (Element msg)
+    , num : Int
     }
     -> Element msg
 view options =
@@ -52,7 +58,9 @@ view options =
             )
         , centerX
         ]
-        [ options.viewSlide (current internals) ]
+        (options.viewSlide
+            (getResearch internals options.num)
+        )
 
 
 length : Internals slide -> Int
@@ -64,3 +72,30 @@ current : Internals slide -> Maybe slide
 current { index, slides } =
     Array.fromList slides
         |> Array.get index
+
+
+getExposition : Internals slide -> Int -> Maybe slide
+getExposition { index, slides } num =
+    let
+        _ =
+            Debug.log "slides!!!!!" slides
+
+        l =
+            List.length slides
+
+        which =
+            if l < 1 then
+                0
+
+            else
+                modBy (List.length slides) (index + num)
+
+        --?
+    in
+    Array.fromList slides
+        |> Array.get which
+
+
+getResearch : Internals slide -> Int -> List (Maybe slide)
+getResearch slides num =
+    List.map (getExposition slides) (List.range 0 num)
