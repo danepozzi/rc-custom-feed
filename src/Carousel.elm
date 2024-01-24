@@ -68,12 +68,6 @@ length { slides } =
     List.length slides
 
 
-current : Internals slide -> Maybe slide
-current { index, slides } =
-    Array.fromList slides
-        |> Array.get index
-
-
 getExposition : Internals slide -> Int -> Maybe slide
 getExposition { index, slides } num =
     let

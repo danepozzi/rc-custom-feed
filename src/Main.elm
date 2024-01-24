@@ -1,9 +1,11 @@
 module Main exposing (main)
 
+import AppUrl exposing (AppUrl)
 import Browser exposing (UrlRequest(..))
 import Browser.Navigation as Nav
 import Carousel exposing (Carousel)
 import Decode exposing (..)
+import Dict
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
@@ -11,12 +13,25 @@ import Element.Input as Input
 import Http
 import Json.Decode exposing (Error(..))
 import Url exposing (Url)
-import Url.Parser exposing ((</>), (<?>), Parser)
 
 
-urlParser : Parser (String -> a) a
-urlParser =
-    Url.Parser.string
+parametersFromAppUrl : AppUrl -> Parameters
+parametersFromAppUrl url =
+    Parameters
+        (Dict.get
+            "keyword"
+            url.queryParameters
+            |> Maybe.andThen List.head
+        )
+        (Dict.get "elements" url.queryParameters
+            |> Maybe.andThen List.head
+            |> Maybe.andThen String.toInt
+        )
+        (Dict.get
+            "order"
+            url.queryParameters
+            |> Maybe.andThen List.head
+        )
 
 
 type Msg
@@ -25,27 +40,50 @@ type Msg
     | RequestUrl Browser.UrlRequest
     | NextExposition
     | DataReceived (Result Http.Error (List Exposition))
+    | UpdateParameters Parameters
 
 
 type alias Model =
     { navKey : Nav.Key
     , research : List Exposition
-    , route : Maybe String
     , expositions : Carousel Exposition
-    , display : Int
+    , parameters : Parameters
+    , view : View
     }
+
+
+type View
+    = Error
+    | Carousel
+
+
+type alias Parameters =
+    { keyword : Maybe String
+    , elements : Maybe Int
+    , order : Maybe String
+    }
+
+
+type Order
+    = Recent
+    | Random
 
 
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url navKey =
-    ( { navKey = navKey
-      , research = []
-      , route = Url.Parser.parse urlParser url
-      , expositions = Carousel.create [] 1
-      , display = 3
-      }
-    , sendQuery (Maybe.withDefault "Nothing" (Url.Parser.parse urlParser url))
-    )
+    let
+        model =
+            { navKey = navKey
+            , research = []
+            , expositions = Carousel.create [] 1
+            , parameters = parametersFromAppUrl (AppUrl.fromUrl url)
+            , view = Carousel
+            }
+
+        _ =
+            Debug.log "model" model
+    in
+    ( model, sendQuery (Maybe.withDefault "Nothing" model.parameters.keyword) )
 
 
 
@@ -69,17 +107,28 @@ update msg model =
                 _ =
                     Debug.log "http-request" expositions
             in
-            ( { model | expositions = Carousel.create expositions model.display }, Cmd.none )
+            ( { model
+                | expositions = Carousel.create expositions (Maybe.withDefault 1 model.parameters.elements)
+              }
+            , Cmd.none
+            )
 
         DataReceived (Err error) ->
             let
                 _ =
                     Debug.log "error" error
             in
-            ( model, Cmd.none )
+            ( { model | view = Error }, Cmd.none )
 
         NextExposition ->
             ( { model | expositions = Carousel.next model.expositions }, Cmd.none )
+
+        UpdateParameters p ->
+            let
+                _ =
+                    Debug.log "parameters" p
+            in
+            ( { model | parameters = p }, Cmd.none )
 
 
 sendQuery : String -> Cmd Msg
@@ -107,17 +156,25 @@ sendQuery keyw =
 
 view : Model -> Browser.Document Msg
 view model =
+    let
+        content =
+            case model.view of
+                Carousel ->
+                    [ layout [ width fill ]
+                        (Carousel.view
+                            { carousel = model.expositions
+                            , onNext = NextExposition
+                            , viewSlide = viewResearch
+                            , num = Maybe.withDefault 1 model.parameters.elements - 1
+                            }
+                        )
+                    ]
+
+                Error ->
+                    [ layout [ width fill ] (Element.text "bad query. you must provide keyword, number of elements and order. example: http://localhost:8080/?keyword=kcpedia&elements=2&order=recent") ]
+    in
     { title = "custom-feed"
-    , body =
-        [ layout [ width fill ]
-            (Carousel.view
-                { carousel = model.expositions
-                , onNext = NextExposition
-                , viewSlide = viewResearch
-                , num = model.display - 1
-                }
-            )
-        ]
+    , body = content
     }
 
 
@@ -192,9 +249,9 @@ main : Program () Model Msg
 main =
     Browser.application
         { init = init
-        , onUrlChange = ChangeUrl
-        , onUrlRequest = RequestUrl
         , update = update
         , view = view
         , subscriptions = \_ -> Sub.none
+        , onUrlChange = ChangeUrl
+        , onUrlRequest = RequestUrl
         }
