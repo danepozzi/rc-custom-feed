@@ -321,6 +321,7 @@ main =
         }
 
 
+subscriptions : a -> Sub Msg
 subscriptions _ =
     Browser.Events.onResize WindowWasResized
 
