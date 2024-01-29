@@ -1,4 +1,4 @@
-module Main exposing (main)
+module Main exposing (main, shuffleWithSeed)
 
 import AppUrl exposing (AppUrl)
 import Browser exposing (UrlRequest(..))
@@ -74,8 +74,8 @@ type alias Parameters =
     }
 
 
-init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
-init _ url navKey =
+init : Int -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init seed url navKey =
     let
         model =
             { navKey = navKey
@@ -83,7 +83,7 @@ init _ url navKey =
             , expositions = Carousel.create [] 1
             , parameters = parametersFromAppUrl (AppUrl.fromUrl url)
             , view = Carousel
-            , seed = 42
+            , seed = seed
             }
 
         _ =
@@ -119,7 +119,7 @@ update msg model =
                             expositions
 
                         Just "random" ->
-                            shuffleWithSeed 42 expositions
+                            shuffleWithSeed model.seed expositions
 
                         Nothing ->
                             expositions
@@ -265,7 +265,7 @@ viewExposition exp =
             Element.text "Loading..."
 
 
-main : Program () Model Msg
+main : Program Int Model Msg
 main =
     Browser.application
         { init = init
