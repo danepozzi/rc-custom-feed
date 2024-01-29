@@ -54,7 +54,7 @@ view options =
     Element.wrappedRow
         [ Element.width
             (fill
-                |> maximum 800
+                |> maximum 1900
             )
         , centerX
         ]

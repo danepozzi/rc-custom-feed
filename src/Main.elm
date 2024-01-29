@@ -2,6 +2,7 @@ module Main exposing (main, shuffleWithSeed)
 
 import AppUrl exposing (AppUrl)
 import Browser exposing (UrlRequest(..))
+import Browser.Events
 import Browser.Navigation as Nav
 import Carousel exposing (Carousel)
 import Decode exposing (..)
@@ -9,6 +10,7 @@ import Dict
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
+import Element.Events
 import Element.Font as Font
 import Element.Input as Input
 import Http
@@ -51,6 +53,7 @@ type Msg
     | NextExposition
     | DataReceived (Result Http.Error (List Exposition))
     | UpdateParameters Parameters
+    | WindowWasResized Int Int
 
 
 type alias Model =
@@ -60,6 +63,7 @@ type alias Model =
     , parameters : Parameters
     , seed : Int
     , view : View
+    , windowSize : { w : Int, h : Int }
     }
 
 
@@ -75,8 +79,8 @@ type alias Parameters =
     }
 
 
-init : Int -> Url -> Nav.Key -> ( Model, Cmd Msg )
-init seed url navKey =
+init : ( Int, Int, Int ) -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init ( seed, width, height ) url navKey =
     let
         model =
             { navKey = navKey
@@ -85,6 +89,7 @@ init seed url navKey =
             , parameters = parametersFromAppUrl (AppUrl.fromUrl url)
             , view = Carousel
             , seed = seed
+            , windowSize = { w = width, h = height }
             }
 
         _ =
@@ -151,6 +156,9 @@ update msg model =
             in
             ( { model | parameters = p }, Cmd.none )
 
+        WindowWasResized w h ->
+            ( { model | windowSize = { w = w, h = h } }, Cmd.none )
+
 
 sendQuery : String -> Cmd Msg
 sendQuery keyw =
@@ -181,7 +189,7 @@ view model =
         content =
             case model.view of
                 Carousel ->
-                    [ layout [ width fill ]
+                    [ layout [ width (px 500) ]
                         (Carousel.view
                             { carousel = model.expositions
                             , onNext = NextExposition
@@ -199,9 +207,13 @@ view model =
     }
 
 
+defaultPadding =
+    { top = 0, bottom = 0, left = 0, right = 0 }
+
+
 viewResearch : List (Maybe Exposition) -> List (Element Msg)
 viewResearch exp =
-    [ Element.column [ width fill ]
+    [ Element.row [ width fill, paddingEach { defaultPadding | left = 50 }, spacing 25 ]
         (List.concat
             [ List.map
                 viewExposition
@@ -209,9 +221,10 @@ viewResearch exp =
             , [ Input.button
                     [ width fill
                     , Background.color (rgb255 0 255 144)
-                    , Border.color (rgb255 0 0 0)
-                    , Border.width 2
-                    , Border.rounded 3
+
+                    -- , Border.color (rgb255 0 0 0)
+                    -- , Border.width 2
+                    -- , Border.rounded 3
                     , Element.focused
                         [ Background.color (rgb255 0 255 255) ]
                     , centerX
@@ -231,9 +244,11 @@ viewExposition exp =
         Just exposition ->
             Element.column
                 [ width fill
-                , Border.color (rgb255 0 0 0)
-                , Border.width 2
-                , Border.rounded 3
+
+                -- , Border.color (rgb255 0 0 0)
+                -- , Border.width 2
+                -- , Border.rounded 3
+                , Element.alignTop
                 ]
                 [ el
                     [ --Background.color (rgb255 0 250 160)
@@ -254,7 +269,7 @@ viewExposition exp =
                     [ --Background.color (rgb255 0 255 255)
                       height fill
                     , Font.center
-                    , Font.size 24
+                    , Font.size 20
                     , Font.bold
                     ]
                     [ Element.newTabLink
@@ -264,11 +279,13 @@ viewExposition exp =
                         }
                     ]
                 , paragraph
-                    [ -- Background.color (rgb255 0 250 160)
-                      height fill
+                    [ --Background.color (rgb255 0 250 160)
+                      height
+                        fill
                     , Element.centerX
                     , Font.center
-                    , Font.size 24
+                    , Font.size 20
+                    , Element.paddingEach { defaultPadding | bottom = 24 }
                     ]
                     [ Element.newTabLink
                         []
@@ -283,7 +300,7 @@ viewExposition exp =
 
                     --, Background.color (rgb255 160 250 100)
                     , Element.centerX
-                    , Font.size 18
+                    , Font.size 15
                     ]
                     [ Element.text exposition.abstract ]
                 ]
@@ -292,16 +309,20 @@ viewExposition exp =
             Element.text "Loading..."
 
 
-main : Program Int Model Msg
+main : Program ( Int, Int, Int ) Model Msg
 main =
     Browser.application
         { init = init
         , update = update
         , view = view
-        , subscriptions = \_ -> Sub.none
+        , subscriptions = subscriptions
         , onUrlChange = ChangeUrl
         , onUrlRequest = RequestUrl
         }
+
+
+subscriptions _ =
+    Browser.Events.onResize WindowWasResized
 
 
 authorLink : Int -> String
