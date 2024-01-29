@@ -13,6 +13,7 @@ type alias Exposition =
     , author : Author
     , thumb : Maybe String
     , title : String
+    , url : String
 
     --, type_ : String
     }
@@ -46,7 +47,7 @@ authorDecoder =
 
 expositionDecoder : Json.Decode.Decoder Exposition
 expositionDecoder =
-    Json.Decode.map4 Exposition
+    Json.Decode.map5 Exposition
         (Json.Decode.field "abstract" Json.Decode.string)
         --(Json.Decode.field "default-page" Json.Decode.string)
         --(Json.Decode.field "id" Json.Decode.int)
@@ -56,6 +57,7 @@ expositionDecoder =
         (Json.Decode.maybe (Json.Decode.field "thumb" Json.Decode.string))
         --(Json.Decode.field "meta-data-page" Json.Decode.string)
         (Json.Decode.field "title" Json.Decode.string)
+        (Json.Decode.field "default-page" Json.Decode.string)
 
 
 expositionsDecoder : Json.Decode.Decoder (List Exposition)

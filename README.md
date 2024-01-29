@@ -4,11 +4,14 @@ This is a tool to help creating custom feeds for the Research Catalaogue portals
 
 ## To Test
 
-npx elm-watch hot
+
+__npx elm-watch hot__
 
 json-server --watch kcpedia.json -p 5019
 
 http-server --port 8080 -P http://localhost:8080?
+
+
 
 ## TODO
 - At the moment carousel displays one exposition per slide. This might be also customised in the url

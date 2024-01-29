@@ -9,6 +9,7 @@ import Dict
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
+import Element.Font as Font
 import Element.Input as Input
 import Http
 import Json.Decode exposing (Error(..))
@@ -228,37 +229,63 @@ viewExposition : Maybe Exposition -> Element Msg
 viewExposition exp =
     case exp of
         Just exposition ->
-            Element.row
+            Element.column
                 [ width fill
                 , Border.color (rgb255 0 0 0)
                 , Border.width 2
                 , Border.rounded 3
                 ]
-                [ paragraph
-                    [ Background.color (rgb255 0 250 160)
-                    , height fill
+                [ el
+                    [ --Background.color (rgb255 0 250 160)
+                      height fill
+                    , Element.centerX
                     ]
-                    [ Element.text (Maybe.withDefault "" exposition.thumb) ]
-                , Element.column
-                    [ width fill, spacing 5, padding 5 ]
-                    [ paragraph
-                        [ Background.color (rgb255 0 255 255)
-                        , height fill
-                        ]
-                        [ Element.text exposition.title ]
-                    , paragraph
-                        [ Background.color (rgb255 0 250 160)
-                        , height fill
-                        ]
-                        [ Element.text exposition.author.name ]
-                    , paragraph
-                        [ Element.height
-                            (fill |> maximum 100 |> minimum 100)
-                        , scrollbarY
-                        , Background.color (rgb255 160 250 100)
-                        ]
-                        [ Element.text exposition.abstract ]
+                    (Element.newTabLink
+                        []
+                        { url = exposition.url
+                        , label =
+                            Element.image []
+                                { src = Maybe.withDefault "" exposition.thumb
+                                , description = "preview image of the exposition"
+                                }
+                        }
+                    )
+                , paragraph
+                    [ --Background.color (rgb255 0 255 255)
+                      height fill
+                    , Font.center
+                    , Font.size 24
+                    , Font.bold
                     ]
+                    [ Element.newTabLink
+                        []
+                        { url = exposition.url
+                        , label = Element.text exposition.title
+                        }
+                    ]
+                , paragraph
+                    [ -- Background.color (rgb255 0 250 160)
+                      height fill
+                    , Element.centerX
+                    , Font.center
+                    , Font.size 24
+                    ]
+                    [ Element.newTabLink
+                        []
+                        { url = authorLink exposition.author.id
+                        , label = Element.text exposition.author.name
+                        }
+                    ]
+                , paragraph
+                    [ Element.height
+                        (fill |> maximum 100 |> minimum 100)
+                    , scrollbarY
+
+                    --, Background.color (rgb255 160 250 100)
+                    , Element.centerX
+                    , Font.size 18
+                    ]
+                    [ Element.text exposition.abstract ]
                 ]
 
         Nothing ->
@@ -275,3 +302,8 @@ main =
         , onUrlChange = ChangeUrl
         , onUrlRequest = RequestUrl
         }
+
+
+authorLink : Int -> String
+authorLink authorId =
+    "https://www.researchcatalogue.net/profile/?person=" ++ String.fromInt authorId
