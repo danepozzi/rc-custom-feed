@@ -12,6 +12,8 @@ import Element.Border as Border
 import Element.Input as Input
 import Http
 import Json.Decode exposing (Error(..))
+import Random
+import Random.List exposing (shuffle)
 import Url exposing (Url)
 
 
@@ -34,6 +36,13 @@ parametersFromAppUrl url =
         )
 
 
+shuffleWithSeed : Int -> List a -> List a
+shuffleWithSeed seed lst =
+    Random.initialSeed seed
+        |> Random.step (shuffle lst)
+        |> Tuple.first
+
+
 type Msg
     = NoOp
     | ChangeUrl Url
@@ -48,6 +57,7 @@ type alias Model =
     , research : List Exposition
     , expositions : Carousel Exposition
     , parameters : Parameters
+    , seed : Int
     , view : View
     }
 
@@ -64,11 +74,6 @@ type alias Parameters =
     }
 
 
-type Order
-    = Recent
-    | Random
-
-
 init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url navKey =
     let
@@ -78,6 +83,7 @@ init _ url navKey =
             , expositions = Carousel.create [] 1
             , parameters = parametersFromAppUrl (AppUrl.fromUrl url)
             , view = Carousel
+            , seed = 42
             }
 
         _ =
@@ -105,10 +111,24 @@ update msg model =
         DataReceived (Ok expositions) ->
             let
                 _ =
-                    Debug.log "http-request" expositions
+                    Debug.log "parameters" model.parameters
+
+                exp =
+                    case model.parameters.order of
+                        Just "recent" ->
+                            expositions
+
+                        Just "random" ->
+                            shuffleWithSeed 42 expositions
+
+                        Nothing ->
+                            expositions
+
+                        Just _ ->
+                            expositions
             in
             ( { model
-                | expositions = Carousel.create expositions (Maybe.withDefault 1 model.parameters.elements)
+                | expositions = Carousel.create exp (Maybe.withDefault 1 model.parameters.elements)
               }
             , Cmd.none
             )
@@ -220,7 +240,7 @@ viewExposition exp =
                     ]
                     [ Element.text (Maybe.withDefault "" exposition.thumb) ]
                 , Element.column
-                    [ width fill ]
+                    [ width fill, spacing 5, padding 5 ]
                     [ paragraph
                         [ Background.color (rgb255 0 255 255)
                         , height fill
