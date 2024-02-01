@@ -238,10 +238,43 @@ viewResearch exp =
     ]
 
 
+defaultPageFromUrl : String -> String
+defaultPageFromUrl str =
+    let
+        expositionUrl =
+            Url.fromString str
+
+        expositionPath =
+            case expositionUrl of
+                Just url ->
+                    url.path
+                        |> String.dropLeft 5
+
+                _ ->
+                    ""
+    in
+    expositionPath
+
+
 viewExposition : Maybe Exposition -> Element Msg
 viewExposition exp =
     case exp of
         Just exposition ->
+            let
+                expositionPath =
+                    defaultPageFromUrl exposition.url
+
+                _ =
+                    Debug.log "path" expositionPath
+
+                image =
+                    case Maybe.withDefault "" exposition.thumb of
+                        "" ->
+                            "https://keywords.sarconference2016.net/screenshots2" ++ expositionPath ++ "/0.png"
+
+                        _ ->
+                            Maybe.withDefault "" exposition.thumb
+            in
             Element.column
                 [ width fill
 
@@ -257,11 +290,12 @@ viewExposition exp =
                     ]
                     (Element.newTabLink
                         []
-                        { url = exposition.url
+                        { url = image --exposition.url
                         , label =
-                            Element.image []
-                                { src = Maybe.withDefault "" exposition.thumb
-                                , description = "preview image of the exposition"
+                            Element.image
+                                [ width fill ]
+                                { src = image
+                                , description = "" --image ++ " preview image of the exposition"
                                 }
                         }
                     )
