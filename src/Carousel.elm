@@ -31,10 +31,10 @@ create slides num =
 
 next : Carousel slide -> Carousel slide
 next (Carousel internals) =
-    let
-        _ =
-            Debug.log "internals" internals
-    in
+    --let
+    --_ =
+    --    Debug.log "internals" internals
+    --in
     Carousel
         { internals | index = modBy (length internals) (internals.index + internals.num) }
 
@@ -71,9 +71,8 @@ length { slides } =
 getExposition : Internals slide -> Int -> Maybe slide
 getExposition { index, slides } num =
     let
-        _ =
-            Debug.log "slides!!!!!" slides
-
+        --_ =
+        --    Debug.log "slides!!!!!" slides
         l =
             List.length slides
 

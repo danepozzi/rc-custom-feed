@@ -267,6 +267,9 @@ viewExposition exp =
                 _ =
                     Debug.log "path" expositionPath
 
+                _ =
+                    Debug.log "thumb" exposition.thumb
+
                 image =
                     case Maybe.withDefault "" exposition.thumb of
                         "" ->
@@ -274,6 +277,9 @@ viewExposition exp =
 
                         _ ->
                             Maybe.withDefault "" exposition.thumb
+
+                _ =
+                    Debug.log "image" image
             in
             Element.column
                 [ width fill
