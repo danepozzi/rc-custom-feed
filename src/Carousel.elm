@@ -53,9 +53,7 @@ view options =
     in
     Element.wrappedRow
         [ Element.width
-            (fill
-                |> maximum 1900
-            )
+            fill
         , centerX
         ]
         (options.viewSlide
