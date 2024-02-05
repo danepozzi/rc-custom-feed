@@ -4,7 +4,6 @@ This is a tool to help creating custom feeds for the Research Catalaogue portals
 
 ## To Test
 
-
 __npx elm-watch hot__
 
 json-server --watch kcpedia.json -p 5019
