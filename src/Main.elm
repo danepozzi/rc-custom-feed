@@ -17,6 +17,7 @@ import Http
 import Json.Decode exposing (Error(..))
 import Random
 import Random.List exposing (shuffle)
+import String.Extra
 import Url exposing (Url)
 
 
@@ -189,7 +190,7 @@ view model =
         content =
             case model.view of
                 Carousel ->
-                    [ layout [ width (px 500) ]
+                    [ layout [ width fill ]
                         (Carousel.view
                             { carousel = model.expositions
                             , onNext = NextExposition
@@ -238,10 +239,50 @@ viewResearch exp =
     ]
 
 
+defaultPageFromUrl : String -> String
+defaultPageFromUrl str =
+    let
+        expositionUrl =
+            Url.fromString str
+
+        expositionPath =
+            case expositionUrl of
+                Just url ->
+                    url.path
+                        |> String.dropLeft 5
+
+                _ ->
+                    ""
+    in
+    expositionPath
+
+
 viewExposition : Maybe Exposition -> Element Msg
 viewExposition exp =
     case exp of
         Just exposition ->
+            let
+                expositionPath =
+                    defaultPageFromUrl exposition.url
+
+                image =
+                    case Maybe.withDefault "" exposition.thumb of
+                        "" ->
+                            "https://keywords.sarconference2016.net/screenshots2" ++ expositionPath ++ "/0.png"
+
+                        _ ->
+                            Maybe.withDefault "" exposition.thumb
+
+                shortAbstract =
+                    String.Extra.softEllipsis 300 exposition.abstract
+
+                amountOfText =
+                    String.length shortAbstract + String.length exposition.title
+
+                -- "smart" scaling
+                imageHeight =
+                    px (200 + (500 // amountOfText * 20))
+            in
             Element.column
                 [ width fill
 
@@ -257,11 +298,14 @@ viewExposition exp =
                     ]
                     (Element.newTabLink
                         []
-                        { url = exposition.url
+                        { url = exposition.url --image
                         , label =
-                            Element.image []
-                                { src = Maybe.withDefault "" exposition.thumb
-                                , description = "preview image of the exposition"
+                            Element.image
+                                [ width fill
+                                , height imageHeight
+                                ]
+                                { src = image
+                                , description = "" --image ++ " preview image of the exposition"
                                 }
                         }
                     )
@@ -280,9 +324,7 @@ viewExposition exp =
                     ]
                 , paragraph
                     [ --Background.color (rgb255 0 250 160)
-                      height
-                        fill
-                    , Element.centerX
+                      Element.centerX
                     , Font.center
                     , Font.size 20
                     , Element.paddingEach { defaultPadding | bottom = 24 }
@@ -294,15 +336,11 @@ viewExposition exp =
                         }
                     ]
                 , paragraph
-                    [ Element.height
-                        (fill |> maximum 100 |> minimum 100)
-                    , scrollbarY
-
-                    --, Background.color (rgb255 160 250 100)
-                    , Element.centerX
+                    [ --, Background.color (rgb255 160 250 100)
+                      Element.centerX
                     , Font.size 15
                     ]
-                    [ Element.text exposition.abstract ]
+                    [ Element.text shortAbstract ]
                 ]
 
         Nothing ->

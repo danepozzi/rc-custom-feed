@@ -6,7 +6,7 @@ This is a tool to help creating custom feeds for the Research Catalaogue portals
 
 __npx elm-watch hot__
 
-json-server --watch kcpedia.json -p 5019
+python json-setup.py
 
 http-server --port 8080 -P http://localhost:8080?
 
