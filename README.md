@@ -14,7 +14,6 @@ http-server --port 8080 -P http://localhost:8080?
 
 ## TODO
 
-[c] add a runscript
 [d] install this on the sar server
 [d] crop images, fixed height for the view
 [c] fix the design of the next slide button
