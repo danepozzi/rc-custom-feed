@@ -16,7 +16,8 @@ http-server --port 8080 -P http://localhost:8080?
 
 [ ] add a runscript
 [ ] install this on the sar server
-[ ] make fixed height
+[ ] crop images, fixed height for the view
+[ ] fix the design of the next slide button
 
 - At the moment carousel displays one exposition per slide. This might be also customised in the url
 - Alternative layouts?
