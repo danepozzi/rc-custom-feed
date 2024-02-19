@@ -281,7 +281,9 @@ viewExposition exp =
 
                 -- "smart" scaling
                 imageHeight =
-                    px (200 + (500 // amountOfText * 20))
+                    px 300
+
+                --px (200 + (500 // amountOfText * 20))
             in
             Element.column
                 [ width fill
