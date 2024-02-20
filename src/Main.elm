@@ -196,7 +196,7 @@ view model =
                         (Carousel.view
                             { carousel = model.expositions
                             , onNext = NextExposition
-                            , viewSlide = viewResearch model.windowSize.w
+                            , viewSlide = viewResearch model.windowSize.w (Maybe.withDefault 3 model.parameters.elements)
                             , num = Maybe.withDefault 1 model.parameters.elements - 1
                             }
                         )
@@ -214,12 +214,12 @@ defaultPadding =
     { top = 0, bottom = 0, left = 0, right = 0 }
 
 
-viewResearch : Int -> List (Maybe Exposition) -> List (Element Msg)
-viewResearch w exp =
+viewResearch : Int -> Int -> List (Maybe Exposition) -> List (Element Msg)
+viewResearch w columns exp =
     [ Element.row [ width fill, paddingEach { defaultPadding | left = 50 }, spacing 25 ]
         (List.concat
             [ List.map
-                (w |> viewExposition)
+                (columns |> (w |> viewExposition))
                 exp
             , [ Input.button
                     [ width fill
@@ -259,8 +259,8 @@ defaultPageFromUrl str =
     expositionPath
 
 
-viewExposition : Int -> Maybe Exposition -> Element Msg
-viewExposition w exp =
+viewExposition : Int -> Int -> Maybe Exposition -> Element Msg
+viewExposition w columns exp =
     case exp of
         Just exposition ->
             let
@@ -283,8 +283,9 @@ viewExposition w exp =
 
                 -- "smart" scaling
                 imageHeight =
-                    px (round (toFloat w / 4))
+                    px (round (toFloat w / toFloat (columns + 1)))
 
+                --px (round (toFloat w / 4))
                 --px (200 + (500 // amountOfText * 20))
             in
             Element.column
