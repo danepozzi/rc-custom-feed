@@ -13,6 +13,8 @@ import Element.Border as Border
 import Element.Events
 import Element.Font as Font
 import Element.Input as Input
+import Html exposing (Html)
+import Html.Attributes
 import Http
 import Json.Decode exposing (Error(..))
 import Random
@@ -194,7 +196,7 @@ view model =
                         (Carousel.view
                             { carousel = model.expositions
                             , onNext = NextExposition
-                            , viewSlide = viewResearch
+                            , viewSlide = viewResearch model.windowSize.w
                             , num = Maybe.withDefault 1 model.parameters.elements - 1
                             }
                         )
@@ -212,12 +214,12 @@ defaultPadding =
     { top = 0, bottom = 0, left = 0, right = 0 }
 
 
-viewResearch : List (Maybe Exposition) -> List (Element Msg)
-viewResearch exp =
+viewResearch : Int -> List (Maybe Exposition) -> List (Element Msg)
+viewResearch w exp =
     [ Element.row [ width fill, paddingEach { defaultPadding | left = 50 }, spacing 25 ]
         (List.concat
             [ List.map
-                viewExposition
+                (w |> viewExposition)
                 exp
             , [ Input.button
                     [ width fill
@@ -257,8 +259,8 @@ defaultPageFromUrl str =
     expositionPath
 
 
-viewExposition : Maybe Exposition -> Element Msg
-viewExposition exp =
+viewExposition : Int -> Maybe Exposition -> Element Msg
+viewExposition w exp =
     case exp of
         Just exposition ->
             let
@@ -281,7 +283,7 @@ viewExposition exp =
 
                 -- "smart" scaling
                 imageHeight =
-                    px 300
+                    px (round (toFloat w / 4))
 
                 --px (200 + (500 // amountOfText * 20))
             in
