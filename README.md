@@ -20,3 +20,9 @@ http-server --port 8080 -P http://localhost:8080?
 
 - At the moment carousel displays one exposition per slide. This might be also customised in the url
 - Alternative layouts?
+
+## Design Considerations
+To have a consistent image rendering, that also looks good:
+- we shall not use screenshots (or keep it as a fallback)
+- portal admins shall ensure that each featured exposition has a thumbnail. Ideally we shall ask for a specific aspect ratio (1:1?)
+- in the feed, image height shall be dependent on the number of column + viewport, to keep the ratio consistent
