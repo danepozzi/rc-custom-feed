@@ -23,6 +23,6 @@ http-server --port 8080 -P http://localhost:8080?
 
 ## Design Considerations
 To have a consistent image rendering, that also looks good:
-- we shall not use screenshots (or keep it as a fallback)
+- we shall not use screenshots (or keep it as a fallback). the main problem is ratio and scaling, which needs to be "curated"
 - portal admins shall ensure that each featured exposition has a thumbnail. Ideally we shall ask for a specific aspect ratio (1:1?)
-- in the feed, image height shall be dependent on the number of column + viewport, to keep the ratio consistent
+- in feed image height shall be dependent on the number of columns + viewport, to keep the ratio consistent
