@@ -193,12 +193,21 @@ view model =
             case model.view of
                 Carousel ->
                     [ layout [ width fill ]
-                        (Carousel.view
-                            { carousel = model.expositions
-                            , onNext = NextExposition
-                            , viewSlide = viewResearch model.windowSize.w (Maybe.withDefault 3 model.parameters.elements)
-                            , num = Maybe.withDefault 1 model.parameters.elements - 1
-                            }
+                        (if model.windowSize.w > 800 then
+                            Carousel.view
+                                { carousel = model.expositions
+                                , onNext = NextExposition
+                                , viewSlide = viewResearch model.windowSize.w (Maybe.withDefault 3 model.parameters.elements)
+                                , num = Maybe.withDefault 1 model.parameters.elements - 1
+                                }
+
+                         else
+                            Carousel.view
+                                { carousel = model.expositions
+                                , onNext = NextExposition
+                                , viewSlide = viewResearch model.windowSize.w 1
+                                , num = 0
+                                }
                         )
                     ]
 
