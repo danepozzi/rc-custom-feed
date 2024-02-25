@@ -259,6 +259,88 @@ defaultPageFromUrl str =
     expositionPath
 
 
+viewTitleAuthor : Maybe Exposition -> Element Msg
+viewTitleAuthor exp =
+    case exp of
+        Just exposition ->
+            column []
+                [ paragraph
+                    [ height fill
+                    , Font.center
+                    , Font.size 20
+                    , Font.bold
+                    ]
+                    [ Element.newTabLink
+                        []
+                        { url = exposition.url
+                        , label = Element.text exposition.title
+                        }
+                    ]
+                , paragraph
+                    [ --Background.color (rgb255 0 250 160)
+                      Element.centerX
+                    , Font.center
+                    , Font.size 20
+                    , Element.paddingEach { defaultPadding | bottom = 24 }
+                    ]
+                    [ Element.newTabLink
+                        []
+                        { url = authorLink exposition.author.id
+                        , label = Element.text exposition.author.name
+                        }
+                    ]
+                ]
+
+        Nothing ->
+            Element.text "Waiting for exposition..."
+
+
+viewTitleAuthorAbstract : Maybe Exposition -> Element Msg
+viewTitleAuthorAbstract exp =
+    case exp of
+        Just exposition ->
+            let
+                shortAbstract =
+                    String.Extra.softEllipsis 300 exposition.abstract
+            in
+            column []
+                [ paragraph
+                    [ height fill
+                    , Font.center
+                    , Font.size 20
+                    , Font.bold
+                    ]
+                    [ Element.newTabLink
+                        []
+                        { url = exposition.url
+                        , label = Element.text exposition.title
+                        }
+                    ]
+                , paragraph
+                    [ --Background.color (rgb255 0 250 160)
+                      Element.centerX
+                    , Font.center
+                    , Font.size 20
+                    , Element.paddingEach { defaultPadding | bottom = 24 }
+                    ]
+                    [ Element.newTabLink
+                        []
+                        { url = authorLink exposition.author.id
+                        , label = Element.text exposition.author.name
+                        }
+                    ]
+                , paragraph
+                    [ --, Background.color (rgb255 160 250 100)
+                      Element.centerX
+                    , Font.size 15
+                    ]
+                    [ Element.text shortAbstract ]
+                ]
+
+        Nothing ->
+            Element.text "Waiting for exposition..."
+
+
 viewExposition : Int -> Int -> Maybe Exposition -> Element Msg
 viewExposition w columns exp =
     case exp of
@@ -275,15 +357,14 @@ viewExposition w columns exp =
                         _ ->
                             Maybe.withDefault "" exposition.thumb
 
-                shortAbstract =
-                    String.Extra.softEllipsis 300 exposition.abstract
-
-                amountOfText =
-                    String.length shortAbstract + String.length exposition.title
-
+                --amountOfText =
+                --String.length shortAbstract + String.length exposition.title
                 -- "smart" scaling
+                imgHeight =
+                    round (toFloat w / toFloat (columns + 1))
+
                 imageHeight =
-                    px (round (toFloat w / toFloat (columns + 1)))
+                    px imgHeight
 
                 --px (round (toFloat w / 4))
                 --px (200 + (500 // amountOfText * 20))
@@ -314,38 +395,11 @@ viewExposition w columns exp =
                                 }
                         }
                     )
-                , paragraph
-                    [ --Background.color (rgb255 0 255 255)
-                      height fill
-                    , Font.center
-                    , Font.size 20
-                    , Font.bold
-                    ]
-                    [ Element.newTabLink
-                        []
-                        { url = exposition.url
-                        , label = Element.text exposition.title
-                        }
-                    ]
-                , paragraph
-                    [ --Background.color (rgb255 0 250 160)
-                      Element.centerX
-                    , Font.center
-                    , Font.size 20
-                    , Element.paddingEach { defaultPadding | bottom = 24 }
-                    ]
-                    [ Element.newTabLink
-                        []
-                        { url = authorLink exposition.author.id
-                        , label = Element.text exposition.author.name
-                        }
-                    ]
-                , paragraph
-                    [ --, Background.color (rgb255 160 250 100)
-                      Element.centerX
-                    , Font.size 15
-                    ]
-                    [ Element.text shortAbstract ]
+                , if imgHeight > 300 then
+                    viewTitleAuthorAbstract exp
+
+                  else
+                    viewTitleAuthor exp
                 ]
 
         Nothing ->
