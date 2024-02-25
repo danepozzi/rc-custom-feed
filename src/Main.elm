@@ -225,13 +225,18 @@ defaultPadding =
 
 viewResearch : Int -> Int -> List (Maybe Exposition) -> List (Element Msg)
 viewResearch w columns exp =
+    let
+        buttonWidth =
+            30
+    in
     [ Element.row [ width fill, paddingEach { defaultPadding | left = 50 }, spacing 25 ]
         (List.concat
             [ List.map
                 (columns |> (w |> viewExposition))
                 exp
             , [ Input.button
-                    [ width fill
+                    [ width fill --<| px buttonWidth
+                    , height fill
                     , Background.color (rgb255 0 255 144)
 
                     -- , Border.color (rgb255 0 0 0)
@@ -240,6 +245,8 @@ viewResearch w columns exp =
                     , Element.focused
                         [ Background.color (rgb255 0 255 255) ]
                     , centerX
+
+                    --, moveLeft buttonWidth
                     ]
                     { onPress = Just NextExposition
                     , label = Element.text " > "
