@@ -235,7 +235,7 @@ viewResearch w columns exp =
                 (columns |> (w |> viewExposition))
                 exp
             , [ Input.button
-                    [ width fill --<| px buttonWidth
+                    [ width <| px buttonWidth
                     , height fill
                     , Background.color (rgb255 0 255 144)
 
@@ -279,7 +279,12 @@ viewTitleAuthor : Maybe Exposition -> Element Msg
 viewTitleAuthor exp =
     case exp of
         Just exposition ->
-            column []
+            column
+                [ --Border.color (rgb255 0 0 0)
+                  --, Border.width 2
+                  --, Border.rounded 3
+                  Element.centerX
+                ]
                 [ paragraph
                     [ height fill
                     , Font.center
@@ -319,7 +324,7 @@ viewTitleAuthorAbstract exp =
                 shortAbstract =
                     String.Extra.softEllipsis 300 exposition.abstract
             in
-            column []
+            column [ Element.centerX ]
                 [ paragraph
                     [ height fill
                     , Font.center
@@ -388,9 +393,9 @@ viewExposition w columns exp =
             Element.column
                 [ width fill
 
-                -- , Border.color (rgb255 0 0 0)
-                -- , Border.width 2
-                -- , Border.rounded 3
+                --, Border.color (rgb255 0 0 0)
+                --, Border.width 2
+                --, Border.rounded 3
                 , Element.alignTop
                 ]
                 [ el
