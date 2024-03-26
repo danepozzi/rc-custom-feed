@@ -15,7 +15,10 @@
     const release = "live";
     // const release = "devel";
 
-    window.Elm.Main.init({ node: app, flags: [randInt(), window.innerWidth, window.innerHeight, release] });
+    window.Elm.Main.init({ node: app, flags: { "seed" : randInt()
+					       , "width" : window.innerWidth
+					       , "height" : window.innerHeight,
+					       , "release" : release} });
 
     function randInt() {
       return Math.floor((Math.random() * 1000000))
