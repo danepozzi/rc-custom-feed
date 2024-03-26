@@ -145,7 +145,7 @@ init config url navKey =
                 Result.Err e ->
                     let
                         _ =
-                            Debug.log "wrong config" e
+                            Debug.log "invalid config" e
                     in
                     defaultConfig
 
@@ -238,7 +238,7 @@ sendQuery releaseType keyw =
         url =
             case releaseType of
                 Live ->
-                    "https://rcfeed.sarconference2016.net"
+                    "https://rcfeed.sarconference2016.net/"
 
                 Development ->
                     "http://localhost:2019/"
