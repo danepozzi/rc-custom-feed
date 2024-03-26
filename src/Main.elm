@@ -171,7 +171,7 @@ sendQuery keyw =
         -- ++ keyw
         -- "&portal=&statusprogress=0&statuspublished=0&includelimited=0&includelimited=1&includeprivate=0&includeprivate=1&type_research=research&resulttype=research&modifiedafter=&modifiedbefore=&format=json&limit=50&page=0"
         request =
-            "http://localhost:5019/" ++ keyw
+            "http://135.181.145.180:5019/" ++ keyw
 
         _ =
             Debug.log "send query" request
