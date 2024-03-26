@@ -1,4 +1,4 @@
-module Main exposing (main, shuffleWithSeed)
+module Main exposing (main, release, shuffleWithSeed)
 
 import AppUrl exposing (AppUrl)
 import Browser exposing (UrlRequest(..))
@@ -21,6 +21,11 @@ import Random
 import Random.List exposing (shuffle)
 import String.Extra
 import Url exposing (Url)
+
+
+type Release
+    = Live
+    | Development
 
 
 parametersFromAppUrl : AppUrl -> Parameters
@@ -67,6 +72,7 @@ type alias Model =
     , seed : Int
     , view : View
     , windowSize : { w : Int, h : Int }
+    , release : Release
     }
 
 
@@ -82,23 +88,82 @@ type alias Parameters =
     }
 
 
-init : ( Int, Int, Int ) -> Url -> Nav.Key -> ( Model, Cmd Msg )
-init ( seed, width, height ) url navKey =
+type alias Config =
+    { seed : Int
+    , width : Int
+    , height : Int
+    , release : Release
+    }
+
+
+defaultConfig =
+    { seed = 42
+    , width = 1280
+    , height = 600
+    , release = Live
+    }
+
+
+release : String -> Release
+release str =
+    case String.toLower str of
+        "live" ->
+            Live
+
+        "devel" ->
+            Development
+
+        "development" ->
+            Development
+
+        _ ->
+            Development
+
+
+configDecoder : Json.Decode.Decoder Config
+configDecoder =
+    Json.Decode.map4
+        Config
+        (Json.Decode.field "seed" Json.Decode.int)
+        (Json.Decode.field "width" Json.Decode.int)
+        (Json.Decode.field "height" Json.Decode.int)
+        (Json.Decode.field "release" Json.Decode.string |> Json.Decode.map release)
+
+
+
+-- init ( seed, width, height, release ) url navKey =
+
+
+init : Json.Decode.Value -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init config url navKey =
     let
+        cfg =
+            case Json.Decode.decodeValue configDecoder config of
+                Result.Ok c ->
+                    c
+
+                Result.Err e ->
+                    let
+                        _ =
+                            Debug.log "wrong config" e
+                    in
+                    defaultConfig
+
         model =
             { navKey = navKey
             , research = []
             , expositions = Carousel.create [] 1
             , parameters = parametersFromAppUrl (AppUrl.fromUrl url)
             , view = Carousel
-            , seed = seed
-            , windowSize = { w = width, h = height }
+            , seed = cfg.seed
+            , windowSize = { w = cfg.width, h = cfg.height }
+            , release = cfg.release
             }
 
         _ =
             Debug.log "model" model
     in
-    ( model, sendQuery (Maybe.withDefault "Nothing" model.parameters.keyword) )
+    ( model, sendQuery cfg.release (Maybe.withDefault "Nothing" model.parameters.keyword) )
 
 
 
@@ -163,15 +228,23 @@ update msg model =
             ( { model | windowSize = { w = w, h = h } }, Cmd.none )
 
 
-sendQuery : String -> Cmd Msg
-sendQuery keyw =
+sendQuery : Release -> String -> Cmd Msg
+sendQuery releaseType keyw =
     let
         -- this should later be:
         -- request = "https://www.researchcatalogue.net/portal/search-result?fulltext=&title=&autocomplete=&keyword="
         -- ++ keyw
         -- "&portal=&statusprogress=0&statuspublished=0&includelimited=0&includelimited=1&includeprivate=0&includeprivate=1&type_research=research&resulttype=research&modifiedafter=&modifiedbefore=&format=json&limit=50&page=0"
+        url =
+            case releaseType of
+                Live ->
+                    "https://rcfeed.sarconference2016.net"
+
+                Development ->
+                    "http://localhost:2019/"
+
         request =
-            "http://localhost:5019/" ++ keyw
+            url ++ keyw
 
         _ =
             Debug.log "send query" request
@@ -427,7 +500,7 @@ viewExposition w columns exp =
             Element.text "Loading..."
 
 
-main : Program ( Int, Int, Int ) Model Msg
+main : Program Json.Decode.Value Model Msg
 main =
     Browser.application
         { init = init
