@@ -244,11 +244,15 @@ sendQuery releaseType keyw =
                     "http://localhost:2019/"
 
         request =
-            url ++ keyw ++
-                (case releaseType of
-                     Live -> ".json"
+            url
+                ++ keyw
+                ++ (case releaseType of
+                        Live ->
+                            ".json"
 
-                     Development -> "")
+                        Development ->
+                            ""
+                   )
 
         _ =
             Debug.log "send query" request
