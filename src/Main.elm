@@ -333,7 +333,7 @@ viewResearch w columns exp =
                     --, moveLeft buttonWidth
                     ]
                     { onPress = Just NextExposition
-                    , label = Element.image [] { src = "assets/shevron.svg", description = "next slide" }
+                    , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
                     }
               ]
             ]
