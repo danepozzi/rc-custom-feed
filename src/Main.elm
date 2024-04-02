@@ -248,7 +248,7 @@ sendQuery releaseType keyw =
         url =
             case Live of
                 Live ->
-                    "rcproxy/proxy?keyword=" ++ keyw ++ ".json"
+                    "rcproxy/proxy?keyword=" ++ keyw
 
                 Development ->
                     "http://localhost:2019/" ++ keyw
