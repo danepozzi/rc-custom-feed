@@ -321,13 +321,13 @@ viewResearch w columns exp =
             , [ Input.button
                     [ width <| px buttonWidth
                     , height fill
-                    , Background.color (rgb255 0 255 144)
 
+                    --, Background.color (r)
                     -- , Border.color (rgb255 0 0 0)
                     -- , Border.width 2
                     -- , Border.rounded 3
-                    , Element.focused
-                        [ Background.color (rgb255 0 0 0) ]
+                    -- Element.focused
+                    --[ Background.color (rgb255 0 0 0) ]
                     , centerX
 
                     --, moveLeft buttonWidth
