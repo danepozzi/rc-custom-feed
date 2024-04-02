@@ -248,7 +248,7 @@ sendQuery releaseType keyw =
         url =
             case releaseType of
                 Live ->
-                    "https://rcfeed.sarconference2016.net/"
+                    "/rcproxy/proxy?keyword=" ++ keyw
 
                 Development ->
                     "http://localhost:2019/"
