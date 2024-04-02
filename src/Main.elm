@@ -245,32 +245,19 @@ sendQuery releaseType keyw =
         -- request = "https://www.researchcatalogue.net/portal/search-result?fulltext=&title=&autocomplete=&keyword="
         -- ++ keyw
         -- "&portal=&statusprogress=0&statuspublished=0&includelimited=0&includelimited=1&includeprivate=0&includeprivate=1&type_research=research&resulttype=research&modifiedafter=&modifiedbefore=&format=json&limit=50&page=0"
-        
-
         url =
             case Live of
                 Live ->
-                    "/rcproxy/proxy?keyword="
+                    "rcproxy/proxy?keyword=" ++ keyw ++ ".json"
 
                 Development ->
-                    "http://localhost:2019/"
-
-        request =
-            url
-                ++ keyw
-                ++ (case releaseType of
-                        Live ->
-                            ".json"
-
-                        Development ->
-                            ""
-                   )
+                    "http://localhost:2019/" ++ keyw
 
         _ =
             Debug.log "send query :" url
     in
     Http.get
-        { url = request
+        { url = url
         , expect = Http.expectJson DataReceived Decode.expositionsDecoder
         }
 
