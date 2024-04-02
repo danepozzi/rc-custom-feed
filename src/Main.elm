@@ -13,6 +13,7 @@ import Element.Border as Border
 import Element.Events
 import Element.Font as Font
 import Element.Input as Input
+import Element.Region exposing (description)
 import Html exposing (Html)
 import Html.Attributes
 import Http
@@ -26,6 +27,15 @@ import Url exposing (Url)
 type Release
     = Live
     | Development
+
+
+baseUrl r =
+    case r of
+        Live ->
+            "https://rcfeed.sarconference2016.net/"
+
+        Development ->
+            "http://localhost:8080/"
 
 
 parametersFromAppUrl : AppUrl -> Parameters
@@ -244,11 +254,15 @@ sendQuery releaseType keyw =
                     "http://localhost:2019/"
 
         request =
-            url ++ keyw ++
-                (case releaseType of
-                     Live -> ".json"
+            url
+                ++ keyw
+                ++ (case releaseType of
+                        Live ->
+                            ".json"
 
-                     Development -> "")
+                        Development ->
+                            ""
+                   )
 
         _ =
             Debug.log "send query" request
@@ -289,7 +303,11 @@ view model =
                     ]
 
                 Error ->
-                    [ layout [ width fill ] (Element.text "bad query. you must provide keyword, number of elements and order. example: http://localhost:8080/?keyword=kcpedia&elements=2&order=recent") ]
+                    let
+                        url =
+                            baseUrl model.release
+                    in
+                    [ layout [ width fill ] (Element.text <| "bad query. you must provide keyword, number of elements and order. example: " ++ url ++ "?keyword=kcpedia&elements=2&order=recent") ]
     in
     { title = "custom-feed"
     , body = content
@@ -326,7 +344,7 @@ viewResearch w columns exp =
                     --, moveLeft buttonWidth
                     ]
                     { onPress = Just NextExposition
-                    , label = Element.text " > "
+                    , label = Element.image [] { src = "assets/shevron.svg", description = "next slide" }
                     }
               ]
             ]
