@@ -327,7 +327,7 @@ viewResearch w columns exp =
                     -- , Border.width 2
                     -- , Border.rounded 3
                     , Element.focused
-                        [ Background.color (rgb255 0 255 255) ]
+                        [ Background.color (rgb255 0 0 0) ]
                     , centerX
 
                     --, moveLeft buttonWidth
