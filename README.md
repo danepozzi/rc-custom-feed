@@ -14,9 +14,10 @@ http-server --port 8080 -P http://localhost:8080?
 
 ## TODO
 
-- [d] install this on the sar server
-- [d] crop images, fixed height for the view
 - [c] fix the design of the next slide button
+- [d] add a arrow to the left
+- [c] wire in the proxy
+- [d] test in a block page 
 
 - At the moment carousel displays one exposition per slide. This might be also customised in the url
 - Alternative layouts?
