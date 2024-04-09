@@ -14,14 +14,15 @@ http-server --port 8080 -P http://localhost:8080?
 
 ## TODO
 
-- [c] fix the design of the next slide button
-- [d] add a arrow to the left
 
+- [d] add a arrow to the left
 - [d] test in a block page 
+- [c] scaling of the arrow
 
 
 ## DONE
 
+- [done] add a new design
 - [done] wire in the proxy
 
 - At the moment carousel displays one exposition per slide. This might be also customised in the url
