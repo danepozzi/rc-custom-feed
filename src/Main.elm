@@ -150,6 +150,10 @@ init config url navKey =
         cfg =
             case Json.Decode.decodeValue configDecoder config of
                 Result.Ok c ->
+                    let
+                        _ =
+                            Debug.log "release" c.release
+                    in
                     c
 
                 Result.Err e ->
@@ -246,7 +250,7 @@ sendQuery releaseType keyw =
         -- ++ keyw
         -- "&portal=&statusprogress=0&statuspublished=0&includelimited=0&includelimited=1&includeprivate=0&includeprivate=1&type_research=research&resulttype=research&modifiedafter=&modifiedbefore=&format=json&limit=50&page=0"
         url =
-            case Live of
+            case releaseType of
                 Live ->
                     "rcproxy/proxy?keyword=" ++ keyw
 
