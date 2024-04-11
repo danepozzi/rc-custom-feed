@@ -69,6 +69,7 @@ type Msg
     | ChangeUrl Url
     | RequestUrl Browser.UrlRequest
     | NextExposition
+    | PreviousExposition
     | DataReceived (Result Http.Error (List Exposition))
     | UpdateParameters Parameters
     | WindowWasResized Int Int
@@ -231,6 +232,9 @@ update msg model =
         NextExposition ->
             ( { model | expositions = Carousel.next model.expositions }, Cmd.none )
 
+        PreviousExposition ->
+            ( { model | expositions = Carousel.previous model.expositions }, Cmd.none )
+
         UpdateParameters p ->
             let
                 _ =
@@ -317,9 +321,27 @@ viewResearch w columns exp =
         buttonWidth =
             30
     in
-    [ Element.row [ width fill, paddingEach { defaultPadding | left = 50 }, spacing 25 ]
+    [ Element.row [ width fill, paddingEach { defaultPadding | left = 0 }, spacing 25 ]
         (List.concat
-            [ List.map
+            [ [ Input.button
+                    [ width <| px buttonWidth
+                    , height fill
+
+                    --, Background.color (r)
+                    -- , Border.color (rgb255 0 0 0)
+                    -- , Border.width 2
+                    -- , Border.rounded 3
+                    -- Element.focused
+                    --[ Background.color (rgb255 0 0 0) ]
+                    , centerX
+
+                    --, moveLeft buttonWidth
+                    ]
+                    { onPress = Just PreviousExposition
+                    , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
+                    }
+              ]
+            , List.map
                 (columns |> (w |> viewExposition))
                 exp
             , [ Input.button

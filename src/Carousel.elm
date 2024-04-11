@@ -2,6 +2,7 @@ module Carousel exposing
     ( Carousel
     , create
     , next
+    , previous
     , view
     )
 
@@ -31,12 +32,14 @@ create slides num =
 
 next : Carousel slide -> Carousel slide
 next (Carousel internals) =
-    --let
-    --_ =
-    --    Debug.log "internals" internals
-    --in
     Carousel
         { internals | index = modBy (length internals) (internals.index + internals.num) }
+
+
+previous : Carousel slide -> Carousel slide
+previous (Carousel internals) =
+    Carousel
+        { internals | index = modBy (length internals) (internals.index - internals.num) }
 
 
 view :
