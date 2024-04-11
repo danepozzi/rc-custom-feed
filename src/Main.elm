@@ -394,6 +394,8 @@ viewTitleAuthor exp =
                   --, Border.width 2
                   --, Border.rounded 3
                   Element.centerX
+                , spacing 10
+                , padding 50
                 ]
                 [ paragraph
                     [ height fill
@@ -434,7 +436,7 @@ viewTitleAuthorAbstract exp =
                 shortAbstract =
                     String.Extra.softEllipsis 300 exposition.abstract
             in
-            column [ Element.centerX ]
+            column [ Element.centerX, spacing 10, padding 50 ]
                 [ paragraph
                     [ height fill
                     , Font.center
