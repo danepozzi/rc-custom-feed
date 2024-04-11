@@ -15,13 +15,13 @@ http-server --port 8080 -P http://localhost:8080?
 ## TODO
 
 
-- [d] add a arrow to the left
 - [d] test in a block page 
 - [c] scaling of the arrow
 
 
 ## DONE
 
+- [done] add a arrow to the left
 - [done] add a new design
 - [done] wire in the proxy
 
