@@ -15,4 +15,4 @@ with open("kcpedia.json", "w") as f:
     contents = "".join(contents)
     f.write(contents)
     
-os.system("npx json-server --watch kcpedia.json -p 5019 &")
+os.system("npx json-server --watch kcpedia.json -p 2019 &")
