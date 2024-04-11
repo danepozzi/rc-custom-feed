@@ -331,8 +331,8 @@ viewResearch w columns exp =
                     -- , Border.color (rgb255 0 0 0)
                     -- , Border.width 2
                     -- , Border.rounded 3
-                    -- Element.focused
-                    --[ Background.color (rgb255 0 0 0) ]
+                    , Element.focused
+                        [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
                     , centerX
 
                     --, moveLeft buttonWidth
@@ -352,8 +352,8 @@ viewResearch w columns exp =
                     -- , Border.color (rgb255 0 0 0)
                     -- , Border.width 2
                     -- , Border.rounded 3
-                    -- Element.focused
-                    --[ Background.color (rgb255 0 0 0) ]
+                    , Element.focused
+                        [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
                     , centerX
 
                     --, moveLeft buttonWidth
