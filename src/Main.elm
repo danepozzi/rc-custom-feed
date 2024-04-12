@@ -400,7 +400,7 @@ viewTitleAuthor exp =
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size 20
+                    , Font.size 15
                     , Font.bold
                     ]
                     [ Element.newTabLink
