@@ -428,19 +428,19 @@ viewTitleAuthor exp =
             Element.text "Waiting for exposition..."
 
 
-viewTitleAuthorAbstract : Maybe Exposition -> Element Msg
-viewTitleAuthorAbstract exp =
+viewTitleAuthorAbstract : Int -> Int -> Maybe Exposition -> Element Msg
+viewTitleAuthorAbstract w columns exp =
     case exp of
         Just exposition ->
             let
                 shortAbstract =
                     String.Extra.softEllipsis 300 exposition.abstract
             in
-            column [ Element.centerX, spacing 10, padding 50 ]
+            column [ Element.centerX, spacing 10, padding (round (toFloat w / 10 / toFloat columns)) ]
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size 20
+                    , Font.size (22 - columns)
                     , Font.bold
                     ]
                     [ Element.newTabLink
@@ -529,7 +529,7 @@ viewExposition w columns exp =
                         }
                     )
                 , if imgHeight > 250 then
-                    viewTitleAuthorAbstract exp
+                    viewTitleAuthorAbstract w columns exp
 
                   else
                     viewTitleAuthor exp
