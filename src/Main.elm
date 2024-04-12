@@ -400,7 +400,7 @@ viewTitleAuthor exp =
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size 15
+                    , Font.size 17
                     , Font.bold
                     ]
                     [ Element.newTabLink
@@ -413,7 +413,7 @@ viewTitleAuthor exp =
                     [ --Background.color (rgb255 0 250 160)
                       Element.centerX
                     , Font.center
-                    , Font.size 15
+                    , Font.size 17
                     , Element.paddingEach { defaultPadding | bottom = 24 }
                     ]
                     [ Element.newTabLink
