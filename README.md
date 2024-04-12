@@ -16,12 +16,12 @@ http-server --port 8080 -P http://localhost:8080?
 
 
 - [d] test in a block page. testing here: https://www.researchcatalogue.net/view/2639908/2639909
-- [d] horizontal padding shall also be responsive to card size 
 - [c] scaling of the arrow
 
 
 ## DONE
 
+- [done] horizontal padding shall also be responsive to card size 
 - [done] add a arrow to the left
 - [done] add a new design
 - [done] wire in the proxy
