@@ -385,8 +385,8 @@ defaultPageFromUrl str =
     expositionPath
 
 
-viewTitleAuthor : Maybe Exposition -> Element Msg
-viewTitleAuthor exp =
+viewTitleAuthor : Int -> Int -> Maybe Exposition -> Element Msg
+viewTitleAuthor w columns exp =
     case exp of
         Just exposition ->
             column
@@ -400,7 +400,7 @@ viewTitleAuthor exp =
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size 17
+                    , Font.size (20 - columns)
                     , Font.bold
                     ]
                     [ Element.newTabLink
@@ -413,7 +413,7 @@ viewTitleAuthor exp =
                     [ --Background.color (rgb255 0 250 160)
                       Element.centerX
                     , Font.center
-                    , Font.size 17
+                    , Font.size (20 - columns)
                     , Element.paddingEach { defaultPadding | bottom = 24 }
                     ]
                     [ Element.newTabLink
@@ -453,7 +453,7 @@ viewTitleAuthorAbstract w columns exp =
                     [ --Background.color (rgb255 0 250 160)
                       Element.centerX
                     , Font.center
-                    , Font.size 20
+                    , Font.size (20 - columns)
                     , Element.paddingEach { defaultPadding | bottom = 24 }
                     ]
                     [ Element.newTabLink
@@ -532,7 +532,7 @@ viewExposition w columns exp =
                     viewTitleAuthorAbstract w columns exp
 
                   else
-                    viewTitleAuthor exp
+                    viewTitleAuthor w columns exp
                 ]
 
         Nothing ->
