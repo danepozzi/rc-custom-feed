@@ -395,7 +395,7 @@ viewTitleAuthor exp =
                   --, Border.rounded 3
                   Element.centerX
                 , spacing 10
-                , paddingXY 5 50
+                , paddingXY 5 25
                 ]
                 [ paragraph
                     [ height fill
