@@ -413,7 +413,7 @@ viewTitleAuthor exp =
                     [ --Background.color (rgb255 0 250 160)
                       Element.centerX
                     , Font.center
-                    , Font.size 20
+                    , Font.size 15
                     , Element.paddingEach { defaultPadding | bottom = 24 }
                     ]
                     [ Element.newTabLink
