@@ -528,7 +528,7 @@ viewExposition w columns exp =
                                 }
                         }
                     )
-                , if imgHeight > 300 then
+                , if imgHeight > 250 then
                     viewTitleAuthorAbstract exp
 
                   else
