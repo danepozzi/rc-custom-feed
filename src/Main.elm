@@ -13,6 +13,7 @@ import Element.Border as Border
 import Element.Events
 import Element.Font as Font
 import Element.Input as Input
+import Element.Keyed
 import Element.Region exposing (description)
 import Html exposing (Html)
 import Html.Attributes
@@ -321,49 +322,54 @@ viewResearch w columns exp =
         buttonWidth =
             30
     in
-    [ Element.row [ width fill, paddingEach { defaultPadding | left = 0 }, spacing 25 ]
-        (List.concat
-            [ [ Input.button
-                    [ width <| px buttonWidth
-                    , height fill
+    [ Element.Keyed.row
+        [ width fill, paddingEach { defaultPadding | left = 0 }, spacing 25 ]
+        [ ( "prev"
+          , Input.button
+                [ width <| px buttonWidth
+                , height fill
 
-                    --, Background.color (r)
-                    -- , Border.color (rgb255 0 0 0)
-                    -- , Border.width 2
-                    -- , Border.rounded 3
-                    , Element.focused
-                        [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
-                    , centerX
+                --, Background.color (r)
+                -- , Border.color (rgb255 0 0 0)
+                -- , Border.width 2
+                -- , Border.rounded 3
+                , Element.focused
+                    [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
+                , centerX
 
-                    --, moveLeft buttonWidth
-                    ]
-                    { onPress = Just PreviousExposition
-                    , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
-                    }
-              ]
-            , List.map
-                (columns |> (w |> viewExposition))
-                exp
-            , [ Input.button
-                    [ width <| px buttonWidth
-                    , height fill
+                --, moveLeft buttonWidth
+                ]
+                { onPress = Just PreviousExposition
+                , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
+                }
+          )
+        , ( "content"
+          , Element.row [ width fill ]
+                (List.map
+                    (columns |> (w |> viewExposition))
+                    exp
+                )
+          )
+        , ( "next"
+          , Input.button
+                [ width <| px buttonWidth
+                , height fill
 
-                    --, Background.color (r)
-                    -- , Border.color (rgb255 0 0 0)
-                    -- , Border.width 2
-                    -- , Border.rounded 3
-                    , Element.focused
-                        [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
-                    , centerX
+                --, Background.color (r)
+                -- , Border.color (rgb255 0 0 0)
+                -- , Border.width 2
+                -- , Border.rounded 3
+                , Element.focused
+                    [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
+                , centerX
 
-                    --, moveLeft buttonWidth
-                    ]
-                    { onPress = Just NextExposition
-                    , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
-                    }
-              ]
-            ]
-        )
+                --, moveLeft buttonWidth
+                ]
+                { onPress = Just NextExposition
+                , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
+                }
+          )
+        ]
     ]
 
 
