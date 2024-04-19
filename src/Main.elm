@@ -328,16 +328,16 @@ viewResearch w columns exp =
             [ [ Input.button
                     [ width <| px buttonWidth
                     , height fill
-
-                    --, Background.color (r)
-                    -- , Border.color (rgb255 0 0 0)
-                    -- , Border.width 2
-                    -- , Border.rounded 3
                     , Element.focused
                         [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
                     , centerX
-
-                    --, moveLeft buttonWidth
+                    , Element.mouseOver
+                        [ Background.color (Element.rgb 0.85 0.85 0.85)
+                        ]
+                    , Transition.properties
+                        [ Transition.backgroundColor 500 []
+                        ]
+                        |> Element.htmlAttribute
                     ]
                     { onPress = Just PreviousExposition
                     , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
@@ -349,16 +349,16 @@ viewResearch w columns exp =
             , [ Input.button
                     [ width <| px buttonWidth
                     , height fill
-
-                    --, Background.color (r)
-                    -- , Border.color (rgb255 0 0 0)
-                    -- , Border.width 2
-                    -- , Border.rounded 3
                     , Element.focused
                         [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
                     , centerX
-
-                    --, moveLeft buttonWidth
+                    , Element.mouseOver
+                        [ Background.color (Element.rgb 0.85 0.85 0.85)
+                        ]
+                    , Transition.properties
+                        [ Transition.backgroundColor 500 []
+                        ]
+                        |> Element.htmlAttribute
                     ]
                     { onPress = Just NextExposition
                     , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
