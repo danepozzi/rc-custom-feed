@@ -8,6 +8,7 @@ module Carousel exposing
 
 import Array
 import Element exposing (..)
+import Element.Keyed
 
 
 type Carousel slide
@@ -42,6 +43,10 @@ previous (Carousel internals) =
         { internals | index = modBy (length internals) (internals.index - internals.num) }
 
 
+zip =
+    List.map2 Tuple.pair
+
+
 view :
     { carousel : Carousel slide
     , onNext : msg
@@ -53,13 +58,21 @@ view options =
     let
         (Carousel internals) =
             options.carousel
+
+        ourView : List ( Int, Maybe slide ) -> List ( String, Element msg )
+        ourView indexedSlides =
+            let
+                ( idxs, slides ) =
+                    List.unzip indexedSlides
+            in
+            zip (idxs |> List.map String.fromInt) (options.viewSlide slides)
     in
-    Element.wrappedRow
+    Element.Keyed.row
         [ Element.width
             fill
         , centerX
         ]
-        (options.viewSlide
+        (ourView
             (getResearch internals options.num)
         )
 
@@ -90,6 +103,6 @@ getExposition { index, slides } num =
         |> Array.get which
 
 
-getResearch : Internals slide -> Int -> List (Maybe slide)
+getResearch : Internals slide -> Int -> List ( Int, Maybe slide )
 getResearch slides num =
-    List.map (getExposition slides) (List.range 0 num)
+    List.map (\i -> ( i, getExposition slides i )) (List.range 0 num)
