@@ -9,6 +9,7 @@ module Carousel exposing
 import Array
 import Element exposing (..)
 import Element.Keyed
+import Quantity exposing (at_)
 
 
 type Carousel slide
@@ -33,6 +34,16 @@ create slides num =
 
 next : Carousel slide -> Carousel slide
 next (Carousel internals) =
+    let
+        _ =
+            Debug.log "index" internals.index
+
+        _ =
+            Debug.log "num" internals.num
+
+        _ =
+            Debug.log "length" (length internals)
+    in
     Carousel
         { internals | index = modBy (length internals) (internals.index + internals.num) }
 
@@ -47,6 +58,11 @@ zip =
     List.map2 Tuple.pair
 
 
+addIdxOffset : Int -> Int -> Int -> Int
+addIdxOffset offset num int =
+    modBy num (int + offset)
+
+
 view :
     { carousel : Carousel slide
     , onNext : msg
@@ -59,13 +75,25 @@ view options =
         (Carousel internals) =
             options.carousel
 
-        ourView : List ( Int, Maybe slide ) -> List ( String, Element msg )
-        ourView indexedSlides =
+        ourView : List Int -> List (Maybe slide) -> List ( String, Element msg )
+        ourView idx slide =
             let
-                ( idxs, slides ) =
-                    List.unzip indexedSlides
+                idxs =
+                    idx
+
+                slides =
+                    slide
             in
             zip (idxs |> List.map String.fromInt) (options.viewSlide slides)
+
+        range =
+            List.range 0 options.num
+
+        offset =
+            List.map (addIdxOffset internals.index (List.length internals.slides)) range
+
+        _ =
+            Debug.log "offset" offset
     in
     Element.Keyed.row
         [ Element.width
@@ -73,6 +101,7 @@ view options =
         , centerX
         ]
         (ourView
+            offset
             (getResearch internals options.num)
         )
 
@@ -103,6 +132,6 @@ getExposition { index, slides } num =
         |> Array.get which
 
 
-getResearch : Internals slide -> Int -> List ( Int, Maybe slide )
+getResearch : Internals slide -> Int -> List (Maybe slide)
 getResearch slides num =
-    List.map (\i -> ( i, getExposition slides i )) (List.range 0 num)
+    List.map (getExposition slides) (List.range 0 num)
