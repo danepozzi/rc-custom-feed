@@ -7,6 +7,7 @@ module Carousel exposing
     )
 
 import Array
+import Basics.Extra
 import Element exposing (..)
 import Element.Keyed
 import Quantity exposing (at_)
@@ -89,21 +90,32 @@ view options =
         range =
             List.range 0 options.num
 
-        offset =
-            List.map (addIdxOffset internals.index (List.length internals.slides)) range
+        size =
+            List.length internals.slides |> Basics.Extra.atLeast 1
 
-        _ =
-            Debug.log "offset" offset
+        offset =
+            List.map (addIdxOffset internals.index size) range
     in
-    Element.Keyed.row
-        [ Element.width
-            fill
-        , centerX
-        ]
-        (ourView
-            offset
-            (getResearch internals options.num)
-        )
+    if List.isEmpty internals.slides == True then
+        Element.row
+            [ Element.width
+                fill
+            , centerX
+            ]
+            (options.viewSlide
+                (getResearch internals options.num)
+            )
+
+    else
+        Element.Keyed.row
+            [ Element.width
+                fill
+            , centerX
+            ]
+            (ourView
+                offset
+                (getResearch internals options.num)
+            )
 
 
 length : Internals slide -> Int
