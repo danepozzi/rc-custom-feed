@@ -322,8 +322,27 @@ viewResearch w columns exp =
     let
         buttonWidth =
             30
+
+        imgHeight =
+            round (toFloat w / toFloat (columns + 1))
+
+        heightt =
+            if imgHeight > 250 then
+                round (toFloat w / 5 * 3)
+
+            else
+                round (toFloat w / 8 * 3)
     in
-    [ Element.row [ width fill, paddingEach { defaultPadding | left = 0 }, spacing 25 ]
+    [ Element.row
+        [ width fill
+        , height (px heightt)
+        , paddingEach { defaultPadding | left = 0 }
+        , spacing 25
+        , Border.color (rgb255 255 0 0)
+        , Border.width 2
+        , Border.rounded 3
+        , Element.alignTop
+        ]
         (List.concat
             [ [ Input.button
                     [ width <| px buttonWidth
@@ -436,13 +455,19 @@ viewTitleAuthorAbstract w columns exp =
         Just exposition ->
             let
                 shortAbstract =
-                    String.Extra.softEllipsis 300 exposition.abstract
+                    String.Extra.softEllipsis (round (toFloat w / 5 * 3 / 3)) exposition.abstract
             in
-            column [ Element.centerX, spacing 10, padding (round (toFloat w / 10 / toFloat columns)) ]
+            column
+                [ Element.centerX
+                , spacing 10
+                , padding (round (toFloat w / 10 / toFloat columns))
+                ]
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size (22 - columns)
+                    , Font.size (round (toFloat w / 5 * 3 / 50))
+
+                    --, Font.size (22 - columns)
                     , Font.bold
                     ]
                     [ Element.newTabLink
@@ -455,7 +480,9 @@ viewTitleAuthorAbstract w columns exp =
                     [ --Background.color (rgb255 0 250 160)
                       Element.centerX
                     , Font.center
-                    , Font.size (20 - columns)
+                    , Font.size (round (toFloat w / 5 * 3 / 50) - 2)
+
+                    --, Font.size (20 - columns)
                     , Element.paddingEach { defaultPadding | bottom = 24 }
                     ]
                     [ Element.newTabLink
@@ -467,7 +494,9 @@ viewTitleAuthorAbstract w columns exp =
                 , paragraph
                     [ --, Background.color (rgb255 160 250 100)
                       Element.centerX
-                    , Font.size 15
+                    , Font.size (round (toFloat w / 5 * 3 / 50) - 5)
+
+                    --, Font.size 15
                     ]
                     [ Element.text shortAbstract ]
                 ]
@@ -506,16 +535,15 @@ viewExposition w columns exp =
             in
             Element.column
                 [ width fill
-
-                --, Border.color (rgb255 0 0 0)
-                --, Border.width 2
-                --, Border.rounded 3
+                , clipY
+                , Border.color (rgb255 0 0 0)
+                , Border.width 2
+                , Border.rounded 3
                 , Element.alignTop
                 ]
                 [ el
                     [ --Background.color (rgb255 0 250 160)
-                      height fill
-                    , Element.centerX
+                      Element.centerX
                     ]
                     (Element.newTabLink
                         []
