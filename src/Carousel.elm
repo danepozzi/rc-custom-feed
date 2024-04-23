@@ -7,8 +7,10 @@ module Carousel exposing
     )
 
 import Array
+import Basics.Extra
 import Element exposing (..)
 import Element.Keyed
+import Quantity exposing (at_)
 
 
 type Carousel slide
@@ -33,6 +35,16 @@ create slides num =
 
 next : Carousel slide -> Carousel slide
 next (Carousel internals) =
+    let
+        _ =
+            Debug.log "index" internals.index
+
+        _ =
+            Debug.log "num" internals.num
+
+        _ =
+            Debug.log "length" (length internals)
+    in
     Carousel
         { internals | index = modBy (length internals) (internals.index + internals.num) }
 
@@ -47,6 +59,11 @@ zip =
     List.map2 Tuple.pair
 
 
+addIdxOffset : Int -> Int -> Int -> Int
+addIdxOffset offset num int =
+    modBy num (int + offset)
+
+
 view :
     { carousel : Carousel slide
     , onNext : msg
@@ -59,22 +76,46 @@ view options =
         (Carousel internals) =
             options.carousel
 
-        ourView : List ( Int, Maybe slide ) -> List ( String, Element msg )
-        ourView indexedSlides =
+        ourView : List Int -> List (Maybe slide) -> List ( String, Element msg )
+        ourView idx slide =
             let
-                ( idxs, slides ) =
-                    List.unzip indexedSlides
+                idxs =
+                    idx
+
+                slides =
+                    slide
             in
             zip (idxs |> List.map String.fromInt) (options.viewSlide slides)
+
+        range =
+            List.range 0 options.num
+
+        size =
+            List.length internals.slides |> Basics.Extra.atLeast 1
+
+        offset =
+            List.map (addIdxOffset internals.index size) range
     in
-    Element.Keyed.row
-        [ Element.width
-            fill
-        , centerX
-        ]
-        (ourView
-            (getResearch internals options.num)
-        )
+    if List.isEmpty internals.slides == True then
+        Element.row
+            [ Element.width
+                fill
+            , centerX
+            ]
+            (options.viewSlide
+                (getResearch internals options.num)
+            )
+
+    else
+        Element.Keyed.row
+            [ Element.width
+                fill
+            , centerX
+            ]
+            (ourView
+                offset
+                (getResearch internals options.num)
+            )
 
 
 length : Internals slide -> Int
@@ -103,6 +144,6 @@ getExposition { index, slides } num =
         |> Array.get which
 
 
-getResearch : Internals slide -> Int -> List ( Int, Maybe slide )
+getResearch : Internals slide -> Int -> List (Maybe slide)
 getResearch slides num =
-    List.map (\i -> ( i, getExposition slides i )) (List.range 0 num)
+    List.map (getExposition slides) (List.range 0 num)
