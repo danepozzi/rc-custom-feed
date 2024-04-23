@@ -15,9 +15,8 @@ http-server --port 8080 -P http://localhost:8080?
 ## TODO
 
 
-- [d] test in a block page. testing here: https://www.researchcatalogue.net/view/2639908/2639909
 - [c] scaling of the arrow
-- [c] add feature for selecting single expositions in url
+- [c] add feature for selecting single expositions in url (maybe ask muhlslegels)
 - [c] arrow size ?
 - [d] arrow flash on hover
 - [d] clever iframe height
@@ -27,6 +26,7 @@ http-server --port 8080 -P http://localhost:8080?
 
 ## DONE
 
+- [done] test in a block page. testing here: https://www.researchcatalogue.net/view/2639908/2639909
 - [done] horizontal padding shall also be responsive to card size 
 - [done] add a arrow to the left
 - [done] add a new design
