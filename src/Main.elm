@@ -323,49 +323,49 @@ viewResearch w columns exp =
         buttonWidth =
             30
     in
-    [ Element.row [ width fill, paddingEach { defaultPadding | left = 0 }, spacing 25 ]
-        (List.concat
-            [ [ Input.button
-                    [ width <| px buttonWidth
-                    , height fill
-                    , Element.focused
-                        [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
-                    , centerX
-                    , Element.mouseOver
-                        [ Background.color (Element.rgb 0.85 0.85 0.85)
-                        ]
-                    , Transition.properties
-                        [ Transition.backgroundColor 500 []
-                        ]
-                        |> Element.htmlAttribute
+    [ Element.column [ width fill, paddingEach { defaultPadding | left = 0 }, spacing 25 ]
+        [ Element.row [ width fill ]
+            [ Input.button
+                [ width <| px buttonWidth
+                , height fill
+                , Element.focused
+                    [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
+                , centerX
+                , Element.mouseOver
+                    [ Background.color (Element.rgb 0.85 0.85 0.85)
                     ]
-                    { onPress = Just PreviousExposition
-                    , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
-                    }
-              ]
-            , List.map
+                , Transition.properties
+                    [ Transition.backgroundColor 500 []
+                    ]
+                    |> Element.htmlAttribute
+                ]
+                { onPress = Just PreviousExposition
+                , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
+                }
+            , Input.button
+                [ width <| px buttonWidth
+                , height fill
+                , Element.focused
+                    [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
+                , centerX
+                , Element.mouseOver
+                    [ Background.color (Element.rgb 0.85 0.85 0.85)
+                    ]
+                , Transition.properties
+                    [ Transition.backgroundColor 500 []
+                    ]
+                    |> Element.htmlAttribute
+                ]
+                { onPress = Just NextExposition
+                , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
+                }
+            ]
+        , Element.row []
+            (List.map
                 (columns |> (w |> viewExposition))
                 exp
-            , [ Input.button
-                    [ width <| px buttonWidth
-                    , height fill
-                    , Element.focused
-                        [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
-                    , centerX
-                    , Element.mouseOver
-                        [ Background.color (Element.rgb 0.85 0.85 0.85)
-                        ]
-                    , Transition.properties
-                        [ Transition.backgroundColor 500 []
-                        ]
-                        |> Element.htmlAttribute
-                    ]
-                    { onPress = Just NextExposition
-                    , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
-                    }
-              ]
-            ]
-        )
+            )
+        ]
     ]
 
 
