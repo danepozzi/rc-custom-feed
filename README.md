@@ -20,8 +20,10 @@ http-server --port 8080 -P http://localhost:8080?
 - [c] add feature for selecting single expositions in url
 - [c] arrow size ?
 - [d] arrow flash on hover
-- [d] add keyd for force image load
 - [d] clever iframe height
+- [d] filter for portal ID / in progress
+- [d] font size static, variable ellipsis
+- [d] interface for generating the iframe
 
 ## DONE
 
@@ -29,6 +31,8 @@ http-server --port 8080 -P http://localhost:8080?
 - [done] add a arrow to the left
 - [done] add a new design
 - [done] wire in the proxy
+- [done] add keyd for force image load
+- [done] check that the key is unique for keyed
 
 - At the moment carousel displays one exposition per slide. This might be also customised in the url
 - Alternative layouts?
