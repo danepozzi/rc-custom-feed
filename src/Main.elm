@@ -79,7 +79,6 @@ type Msg
 
 type alias Model =
     { navKey : Nav.Key
-    , research : List Exposition
     , expositions : Carousel Exposition
     , parameters : Parameters
     , seed : Int
@@ -168,7 +167,6 @@ init config url navKey =
 
         model =
             { navKey = navKey
-            , research = []
             , expositions = Carousel.create [] 1
             , parameters = parametersFromAppUrl (AppUrl.fromUrl url)
             , view = Carousel
