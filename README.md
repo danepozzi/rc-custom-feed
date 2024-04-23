@@ -23,7 +23,7 @@ http-server --port 8080 -P http://localhost:8080?
 - [d] clever iframe height
 - [d] filter for portal ID / in progress
 - [d] font size static, variable ellipsis
-- [d] interface for generating the iframe
+- [d] interface for generating the iframe - preview + iframe html code
 
 ## DONE
 
