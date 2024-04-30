@@ -3,23 +3,26 @@ module Generate exposing (main)
 import Browser exposing (..)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onInput)
 
 
 type alias Model =
     { keyword : String
     , elements : Int
+    , order : String
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { keyword = "music", elements = 2 }, Cmd.none )
+    ( { keyword = "", elements = 2, order = "recent" }, Cmd.none )
 
 
 type Msg
     = Increment
     | Decrement
+    | UpdateKeyword String
+    | SetOrder String
 
 
 update msg model =
@@ -30,12 +33,18 @@ update msg model =
         Decrement ->
             ( { model | elements = model.elements - 1 }, Cmd.none )
 
+        UpdateKeyword newKeyword ->
+            ( { model | keyword = newKeyword }, Cmd.none )
+
+        SetOrder newOrder ->
+            ( { model | order = newOrder }, Cmd.none )
+
 
 view : Model -> Html Msg
 view model =
     let
         url =
-            "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=recent"
+            "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "\""
 
         iframeHeight =
             if model.elements < 4 then
@@ -51,12 +60,21 @@ view model =
             [ h1 []
                 [ text "Generate Feed" ]
             ]
+        , div []
+            [ text "Keyword: "
+            , input [ placeholder "Type your keyword here", value model.keyword, onInput UpdateKeyword ] []
+            ]
         , div
             []
             [ text "Number of Elements to Display: "
             , button [ onClick Decrement ] [ text "-" ]
             , text (String.fromInt model.elements)
             , button [ onClick Increment ] [ text "+" ]
+            ]
+        , div []
+            [ text "Order of Elements: "
+            , select [ width 300, onInput SetOrder ]
+                [ text "recent", text "random" ]
             ]
         , div
             []
