@@ -10,6 +10,9 @@ python3 json-setup.py
 
 http-server --port 8080 -P http://localhost:8080
 
+## Generate
+
+elm make src/Generate.elm --output generate/elm.js
 
 
 ## TODO
