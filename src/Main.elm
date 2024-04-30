@@ -463,7 +463,7 @@ viewTitleAuthorAbstract w columns exp =
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size (round (toFloat w / 5 * 3 / 50))
+                    , Font.size (22 - columns)
 
                     --, Font.size (22 - columns)
                     , Font.bold
@@ -492,7 +492,7 @@ viewTitleAuthorAbstract w columns exp =
                 , paragraph
                     [ --, Background.color (rgb255 160 250 100)
                       Element.centerX
-                    , Font.size (round (toFloat w / 5 * 3 / 50) - 5)
+                    , Font.size (20 - columns)
 
                     --, Font.size 15
                     ]

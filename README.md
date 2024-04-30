@@ -6,9 +6,9 @@ This is a tool to help creating custom feeds for the Research Catalaogue portals
 
 __npx elm-watch hot__
 
-python json-setup.py
+python3 json-setup.py
 
-http-server --port 8080 -P http://localhost:8080?
+http-server --port 8080 -P http://localhost:8080
 
 
 
@@ -21,7 +21,6 @@ http-server --port 8080 -P http://localhost:8080?
 - [d] arrow flash on hover
 - [d] clever iframe height
 - [d] filter for portal ID / in progress
-- [d] font size static, variable ellipsis
 - [d] interface for generating the iframe - preview + iframe html code
 
 ## DONE
@@ -33,6 +32,7 @@ http-server --port 8080 -P http://localhost:8080?
 - [done] wire in the proxy
 - [done] add keyd for force image load
 - [done] check that the key is unique for keyed
+- [done] static font size, responsive ellipsis
 
 - At the moment carousel displays one exposition per slide. This might be also customised in the url
 - Alternative layouts?
