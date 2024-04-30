@@ -7,13 +7,14 @@ import Html.Events exposing (onClick)
 
 
 type alias Model =
-    { elements : Int
+    { keyword : String
+    , elements : Int
     }
 
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( { elements = 2 }, Cmd.none )
+    ( { keyword = "music", elements = 2 }, Cmd.none )
 
 
 type Msg
@@ -34,7 +35,16 @@ view : Model -> Html Msg
 view model =
     let
         url =
-            "https://rcfeed.sarconference2016.net/?keyword=music&elements=" ++ String.fromInt model.elements ++ "&order=recent"
+            "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=recent"
+
+        iframeHeight =
+            if model.elements < 4 then
+                800
+
+            else
+                500
+
+        --round (1000 / toFloat model.elements)
     in
     div [ align "center" ]
         [ div []
@@ -51,13 +61,13 @@ view model =
         , div
             []
             [ iframe
-                [ width 1200, height 800, src url ]
+                [ width 1200, height iframeHeight, src url ]
                 []
             ]
         , div []
             [ text "Copy the following HTML code in the HTML tool in your block page:" ]
         , div []
-            [ text ("<p><iframe " ++ url ++ " width=\"100%\" height=" ++ String.fromInt 800 ++ "\" style=\"border: none;\"></iframe></p>") ]
+            [ text ("<p><iframe " ++ url ++ " width=\"100%\" height=" ++ String.fromInt iframeHeight ++ "\" style=\"border: none;\"></iframe></p>") ]
         ]
 
 
