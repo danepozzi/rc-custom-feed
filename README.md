@@ -24,7 +24,8 @@ elm make src/Generate.elm --output generate/elm.js
 - [d] arrow flash on hover
 - [d] clever iframe height
 - [d] filter for portal ID / in progress
-- [d] interface for generating the iframe - preview + iframe html code
+- [d] change message to display when typing keyword
+- [d] look into order recent / random - seems to be gone and always displaying recent
 
 ## DONE
 
@@ -36,6 +37,7 @@ elm make src/Generate.elm --output generate/elm.js
 - [done] add keyd for force image load
 - [done] check that the key is unique for keyed
 - [done] static font size, responsive ellipsis
+- [done] interface for generating the iframe - preview + iframe html code
 
 - At the moment carousel displays one exposition per slide. This might be also customised in the url
 - Alternative layouts?
