@@ -74,7 +74,7 @@ view model =
         , div []
             [ text "Order of Elements: "
             , select [ width 300, onInput SetOrder ]
-                [ text "recent", text "random" ]
+                (List.map orderOption [ "recent", "random" ])
             ]
         , div
             []
@@ -87,6 +87,10 @@ view model =
         , div []
             [ text ("<p><iframe " ++ url ++ " width=\"100%\" height=" ++ String.fromInt iframeHeight ++ "\" style=\"border: none;\"></iframe></p>") ]
         ]
+
+
+orderOption order =
+    option [ value order ] [ text order ]
 
 
 main : Program () Model Msg
