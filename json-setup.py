@@ -1,18 +1,26 @@
 import os
 
-keyword = "kcpedia"
-get = 'curl -X GET "https://www.researchcatalogue.net/portal/search-result?fulltext=&title=&autocomplete=&keyword=kcpedia&portal=&statusprogress=0&statusprogress=1&statuspublished=0&statuspublished=1&includelimited=0&includeprivate=0&type_research=research&resulttype=research&modifiedafter=&modifiedbefore=&format=json&limit=50&page=0" > kcpedia.json'
+url = "https://www.researchcatalogue.net/portal/search-result?fulltext=&title=&autocomplete=&keyword=&portal=&statusprogress=0&statusprogress=1&statuspublished=0&statuspublished=1&includelimited=0&includelimited=1&includeprivate=0&type_research=research&resulttype=research&format=json&limit=250&page="
 
-os.system(get)
+def getPage(num):
+    if num == 0:
+        get = 'curl -X GET \"'+ url + str(num) +  '\" > rc.json'
+    else:
+        get = 'curl -X GET \"'+ url + str(num) +  '\" >> rc.json'
+    os.system(get)
+    
+for i in range(18):
+    getPage(i)
 
-with open("kcpedia.json", "r") as f:
+with open("rc.json", "r") as f:
     contents = f.readlines()
 
 contents.insert(1,"}")
-contents.insert(0,"{\"kcpedia\":")
+contents.insert(0,"{\"rc\":")
 
-with open("kcpedia.json", "w") as f:
+with open("rc.json", "w") as f:
     contents = "".join(contents)
+    contents = contents.replace("}][{", "},{")
     f.write(contents)
     
-os.system("npx json-server --watch kcpedia.json -p 2019 &")
+os.system("npx json-server --watch rc.json -p 2019 &")
