@@ -5,23 +5,20 @@ with open('rc.json', 'r') as file:
     
 data = dataset['rc']
 
-portals = set()
+portals = {}
 
 for entry in data:
     if 'published_in' in entry:
         for item in entry['published_in']:
             if 'name' in item:
-                portals.add(item['name'])
+                portals[item['id']] = item['name']
 
     if 'connected_to' in entry:
         for item in entry['connected_to']:
             if 'name' in item:
-                print(item['name'])
-                portals.add(item['name'])
-
-portals_list = list(portals)
+                portals[item['id']] = item['name']
 
 with open('all_portals.json', 'w') as outfile:
-    json.dump(portals_list, outfile)
+    json.dump(portals, outfile)
 
 print(len(portals)) #42
