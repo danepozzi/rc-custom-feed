@@ -10,13 +10,8 @@ import Dict
 import Element exposing (..)
 import Element.Background as Background
 import Element.Border as Border
-import Element.Events
 import Element.Font as Font
 import Element.Input as Input
-import Element.Keyed
-import Element.Region exposing (description)
-import Html exposing (Html)
-import Html.Attributes
 import Http
 import Json.Decode exposing (Error(..))
 import Random
@@ -54,6 +49,11 @@ parametersFromAppUrl url =
         )
         (Dict.get
             "order"
+            url.queryParameters
+            |> Maybe.andThen List.head
+        )
+        (Dict.get
+            "portal"
             url.queryParameters
             |> Maybe.andThen List.head
         )
@@ -97,6 +97,7 @@ type alias Parameters =
     { keyword : Maybe String
     , elements : Maybe Int
     , order : Maybe String
+    , portal : Maybe String
     }
 
 
@@ -178,7 +179,7 @@ init config url navKey =
         _ =
             Debug.log "model" model
     in
-    ( model, sendQuery cfg.release (Maybe.withDefault "Nothing" model.parameters.keyword) )
+    ( model, sendQuery cfg.release (Maybe.withDefault "Nothing" model.parameters.keyword) (Maybe.withDefault "Nothing" model.parameters.portal) )
 
 
 
@@ -246,8 +247,8 @@ update msg model =
             ( { model | windowSize = { w = w, h = h } }, Cmd.none )
 
 
-sendQuery : Release -> String -> Cmd Msg
-sendQuery releaseType keyw =
+sendQuery : Release -> String -> String -> Cmd Msg
+sendQuery releaseType keyw portal =
     let
         -- this should later be:
         -- request = "https://www.researchcatalogue.net/portal/search-result?fulltext=&title=&autocomplete=&keyword="
@@ -256,7 +257,7 @@ sendQuery releaseType keyw =
         url =
             case releaseType of
                 Live ->
-                    "rcproxy/proxy?keyword=" ++ keyw
+                    "rcproxy/proxy?keyword=" ++ keyw ++ "&portal=" ++ portal
 
                 Development ->
                     "http://localhost:2019/" ++ keyw
@@ -304,7 +305,7 @@ view model =
                         url =
                             baseUrl model.release
                     in
-                    [ layout [ width fill ] (Element.text <| "bad query. you must provide keyword, number of elements and order. example: " ++ url ++ "?keyword=kcpedia&elements=2&order=recent") ]
+                    [ layout [ width fill ] (Element.text <| "bad query. you must provide keyword, number of elements and order. example: " ++ url ++ "?keyword=rc&elements=20&order=recent") ]
     in
     { title = "custom-feed"
     , body = content
