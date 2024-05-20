@@ -14,6 +14,10 @@ http-server --port 8080 -P http://localhost:8080
 
 elm make src/Generate.elm --output generate/elm.js
 
+## Find and kill json server at port 2019
+
+sudo lsof -i :2019
+kill -9 <PID>
 
 ## TODO
 
