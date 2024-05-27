@@ -408,6 +408,10 @@ defaultPageFromUrl str =
 
 viewTitleAuthor : Int -> Int -> Maybe Exposition -> Element Msg
 viewTitleAuthor w columns exp =
+    let
+        fontSize =
+            round (toFloat w / toFloat columns / 20 + 3)
+    in
     case exp of
         Just exposition ->
             column
@@ -421,7 +425,7 @@ viewTitleAuthor w columns exp =
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size (20 - columns)
+                    , Font.size (fontSize - columns)
                     , Font.bold
                     ]
                     [ Element.newTabLink
@@ -434,7 +438,7 @@ viewTitleAuthor w columns exp =
                     [ --Background.color (rgb255 0 250 160)
                       Element.centerX
                     , Font.center
-                    , Font.size (20 - columns)
+                    , Font.size (fontSize - 1 - columns)
                     , Element.paddingEach { defaultPadding | bottom = 24 }
                     ]
                     [ Element.newTabLink
