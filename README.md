@@ -27,12 +27,19 @@ kill -9 <PID>
 - [c] arrow size ?
 - [d] arrow flash on hover
 - [d] clever iframe height
-- [d] filter for portal ID / in progress
-- [d] change message to display when typing keyword
-- [d] look into order recent / random - seems to be gone and always displaying recent
+
+## Iframe Height Question:
+Some ideas to make it somehow responsive:
+- in RC, we use custom CSS to keep iframe at a consistent ratio
+- different feeds need different ratios (for example: a feed with three elements looks good at 16:9, but a feed with 6 elements needs more a 32:9)
+- therefore the "generate" page shall also generate the custom CSS that then shall be copied over to RC exposition
+- both in the CSS and in the elm app we have a breakpoint to switch the feed to single exposition view (the ratio is then probably something like 3:4)
 
 ## DONE
 
+- [done] filter for portal ID
+- [done] change message to display when typing keyword
+- [done] look into order recent / random - seems to be gone and always displaying recent
 - [done] test in a block page. testing here: https://www.researchcatalogue.net/view/2639908/2639909
 - [done] horizontal padding shall also be responsive to card size 
 - [done] add a arrow to the left
