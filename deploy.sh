@@ -4,4 +4,6 @@ cp index.html /var/www/html/index.html
 cp build/elm.js /var/www/html/build/elm.js
 cp kcpedia.json /var/www/html/kcpedia.json
 cp proxy.go ../rcproxy/proxy.go
-cp -r generate /var/www/html/generate/
+rm -r /var/www/html/generate
+cp -r generate/ /var/www/html/generate/
+
