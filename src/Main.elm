@@ -282,7 +282,8 @@ view model =
             case model.view of
                 Carousel ->
                     [ layout [ width fill ]
-                        (if model.windowSize.w > 800 then
+                        -- breakpoint mobile view
+                        (if model.windowSize.w > 675 then
                             Carousel.view
                                 { carousel = model.expositions
                                 , onNext = NextExposition
@@ -326,11 +327,11 @@ viewResearch w columns exp =
             round (toFloat w / toFloat (columns + 1))
 
         heightt =
-            if imgHeight > 250 then
-                round (toFloat w / 5 * 3)
+            if w > 675 then
+                round (toFloat w / 16 * 9)
 
             else
-                round (toFloat w / 8 * 3)
+                round (toFloat w / 9 * 16)
     in
     [ Element.row
         [ width fill
@@ -453,8 +454,20 @@ viewTitleAuthorAbstract w columns exp =
     case exp of
         Just exposition ->
             let
+                title =
+                    String.length exposition.title
+
+                author =
+                    String.length exposition.author.name
+
+                chars =
+                    title + author
+
                 shortAbstract =
-                    String.Extra.softEllipsis (round (toFloat w / 5 * 3 / 3)) exposition.abstract
+                    String.Extra.softEllipsis (round (toFloat w / 5) - chars) exposition.abstract
+
+                fontSize =
+                    round (toFloat w / toFloat columns / 20)
             in
             column
                 [ Element.centerX
@@ -464,7 +477,7 @@ viewTitleAuthorAbstract w columns exp =
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size (22 - columns)
+                    , Font.size (fontSize - columns)
 
                     --, Font.size (22 - columns)
                     , Font.bold
@@ -479,7 +492,7 @@ viewTitleAuthorAbstract w columns exp =
                     [ --Background.color (rgb255 0 250 160)
                       Element.centerX
                     , Font.center
-                    , Font.size (round (toFloat w / 5 * 3 / 50) - 2)
+                    , Font.size (fontSize - 1 - columns)
 
                     --, Font.size (20 - columns)
                     , Element.paddingEach { defaultPadding | bottom = 24 }
@@ -493,7 +506,7 @@ viewTitleAuthorAbstract w columns exp =
                 , paragraph
                     [ --, Background.color (rgb255 160 250 100)
                       Element.centerX
-                    , Font.size (20 - columns)
+                    , Font.size (fontSize - 2 - columns)
 
                     --, Font.size 15
                     ]
