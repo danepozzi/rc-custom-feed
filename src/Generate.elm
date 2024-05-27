@@ -44,6 +44,9 @@ init _ =
         Err error ->
             ( { portal = Nothing, keyword = "", elements = 2, order = "recent", portals = Dict.empty, error = Just (errorToString error) }, Cmd.none )
 
+citableIframe : String -> Html Msg
+citableIframe url =
+    input [ type_ "text", value url ] [ ]
 
 type Msg
     = Increment
@@ -99,7 +102,7 @@ view model =
             portalIdToString portalId
 
         url =
-            "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString ++ "\""
+            "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString
 
         iframeHeight =
             if model.elements < 4 then
@@ -132,19 +135,21 @@ view model =
             , select [ onInput SetOrder ]
                 (List.map orderOption [ "recent", "random" ])
             ]
+        , div [] [ citableIframe ("<p><iframe src=" ++ q url ++ " width=\"100%\" height=" ++ String.fromInt iframeHeight ++ "\" style=\"border: none;\"></iframe></p>")]
         , br [] []
         , div []
             [ iframe
-                [ width 1200, height iframeHeight, src url ]
+                [ src url, style "width" "100%", height iframeHeight ]
                 []
             ]
         , div []
             [ text "Copy the following HTML code in the HTML tool in your block page:" ]
-        , div []
-            [ text ("<p><iframe " ++ url ++ " width=\"100%\" height=" ++ String.fromInt iframeHeight ++ "\" style=\"border: none;\"></iframe></p>") ]
         ]
 
-
+q : String -> String
+q str =
+    "\"" ++ str ++ "\""
+        
 portalOption : String -> Html msg
 portalOption portalName =
     option [ value portalName ] [ text portalName ]
