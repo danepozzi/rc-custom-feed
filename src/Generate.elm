@@ -137,7 +137,7 @@ view model =
             , select [ onInput SetOrder ]
                 (List.map orderOption [ "recent", "random" ])
             ]
-        , div [] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"<iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
+        , div [] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"><iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
         , br [] []
         , div []
             [ iframe
