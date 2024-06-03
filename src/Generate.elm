@@ -144,8 +144,6 @@ view model =
                 [ src url, style "width" "950px", height iframeHeight ]
                 []
             ]
-        , div []
-            [ text "Copy the following HTML code in the HTML tool in your block page:" ]
         ]
 
 
