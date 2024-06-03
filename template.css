@@ -58,6 +58,30 @@ aspect ratio at breakpoint 675px is: 4/5
     /* 1:7 Aspect Ratio, 7 or more columnns */
 }
 
+.html-text-editor-content div.contdiv8 {
+    padding-top: calc(100% / 8);
+}
+
+.html-text-editor-content div.contdiv9 {
+    padding-top: calc(100% / 9);
+}
+
+.html-text-editor-content div.contdiv10 {
+    padding-top: calc(100% / 10);
+}
+
+.html-text-editor-content div.contdiv11 {
+    padding-top: calc(100% / 11);
+}
+
+.html-text-editor-content div.contdiv12 {
+    padding-top: calc(100% / 12);
+}
+
+.html-text-editor-content div.contdiv13 {
+    padding-top: calc(100% / 13);
+}
+
 .contdiv1 iframe,
 .contdiv2 iframe,
 .contdiv3 iframe,
