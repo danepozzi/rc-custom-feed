@@ -426,7 +426,10 @@ viewTitleAuthor : Int -> Int -> Maybe Exposition -> Element Msg
 viewTitleAuthor w columns exp =
     let
         fontSize =
-            round (toFloat w / toFloat columns / 20 + 3)
+            max 15 (round (toFloat w / toFloat columns / 20))
+
+        --22 - columns
+        --round (toFloat w / toFloat columns / 20 + 3)
     in
     case exp of
         Just exposition ->
@@ -469,6 +472,43 @@ viewTitleAuthor w columns exp =
             Element.text "Waiting for exposition..."
 
 
+viewTitle : Int -> Int -> Maybe Exposition -> Element Msg
+viewTitle w columns exp =
+    let
+        fontSize =
+            max 15 (round (toFloat w / toFloat columns / 20))
+
+        --22 - columns
+        --round (toFloat w / toFloat columns / 20 + 3)
+    in
+    case exp of
+        Just exposition ->
+            column
+                [ --Border.color (rgb255 0 0 0)
+                  --, Border.width 2
+                  --, Border.rounded 3
+                  Element.centerX
+                , spacing 10
+                , paddingXY 5 25
+                ]
+                [ paragraph
+                    [ height fill
+                    , Font.center
+                    , Font.size (fontSize - columns)
+                    , Font.bold
+                    ]
+                    [ Element.newTabLink
+                        []
+                        { url = exposition.url
+                        , label = Element.text exposition.title
+                        }
+                    ]
+                ]
+
+        Nothing ->
+            Element.text "Waiting for exposition..."
+
+
 viewTitleAuthorAbstract : Int -> Int -> Maybe Exposition -> Element Msg
 viewTitleAuthorAbstract w columns exp =
     case exp of
@@ -487,7 +527,10 @@ viewTitleAuthorAbstract w columns exp =
                     String.Extra.softEllipsis (round (toFloat w / 5) - chars) exposition.abstract
 
                 fontSize =
-                    round (toFloat w / toFloat columns / 20)
+                    max 15 (round (toFloat w / toFloat columns / 20))
+
+                --22 - columns
+                --round (toFloat w / toFloat columns / 20)
             in
             column
                 [ Element.centerX
@@ -592,6 +635,9 @@ viewExposition w columns exp =
                     )
                 , if imgHeight > 250 then
                     viewTitleAuthorAbstract w columns exp
+
+                  else if imgHeight < 150 then
+                    viewTitle w columns exp
 
                   else
                     viewTitleAuthor w columns exp
