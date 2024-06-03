@@ -358,7 +358,7 @@ viewResearch w columns exp =
                         [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
                     , centerX
                     , Element.mouseOver
-                        [ Background.color (Element.rgb 0.85 0.85 0.85)
+                        [ Background.color (Element.rgb 0.97 0.97 0.97)
                         ]
                     , Transition.properties
                         [ Transition.backgroundColor 500 []
@@ -379,7 +379,7 @@ viewResearch w columns exp =
                         [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
                     , centerX
                     , Element.mouseOver
-                        [ Background.color (Element.rgb 0.85 0.85 0.85)
+                        [ Background.color (Element.rgb 0.97 0.97 0.97)
                         ]
                     , Transition.properties
                         [ Transition.backgroundColor 500 []
