@@ -17,7 +17,13 @@ aspect ratio at breakpoint 675px is: 4/5
 .html-text-editor-content div.contdiv4,
 .html-text-editor-content div.contdiv5,
 .html-text-editor-content div.contdiv6,
-.html-text-editor-content div.contdiv7 {
+.html-text-editor-content div.contdiv7,
+.html-text-editor-content div.contdiv8,
+.html-text-editor-content div.contdiv9,
+.html-text-editor-content div.contdiv10,
+.html-text-editor-content div.contdiv11,
+.html-text-editor-content div.contdiv12,
+.html-text-editor-content div.contdiv13 {
     position: relative;
     overflow: hidden;
     width: 100%;
@@ -88,7 +94,13 @@ aspect ratio at breakpoint 675px is: 4/5
 .contdiv4 iframe,
 .contdiv5 iframe,
 .contdiv6 iframe,
-.contdiv7 iframe {
+.contdiv7 iframe,
+.contdiv8 iframe,
+.contdiv9 iframe,
+.contdiv10 iframe,
+.contdiv11 iframe,
+.contdiv12 iframe,
+.contdiv13 iframe {
     position: absolute;
     top: 0;
     left: 0;
@@ -106,7 +118,13 @@ aspect ratio at breakpoint 675px is: 4/5
     .html-text-editor-content div.contdiv4,
     .html-text-editor-content div.contdiv5,
     .html-text-editor-content div.contdiv6,
-    .html-text-editor-content div.contdiv7 {
+    .html-text-editor-content div.contdiv7,
+    .html-text-editor-content div.contdiv8,
+    .html-text-editor-content div.contdiv9,
+    .html-text-editor-content div.contdiv10,
+    .html-text-editor-content div.contdiv11,
+    .html-text-editor-content div.contdiv12,
+    .html-text-editor-content div.contdiv13 {
         position: relative;
         overflow: hidden;
         width: 100%;
