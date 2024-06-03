@@ -325,29 +325,19 @@ viewResearch w columns exp =
             30
 
         ratio =
-            case columns of
-                2 ->
-                    10 * 16
+            if columns > 6 then
+                toFloat w / toFloat columns
 
-                3 ->
-                    9 * 16
-
-                4 ->
-                    8 * 16
-
-                5 ->
-                    7 * 16
-
-                _ ->
-                    9 * 16
+            else
+                toFloat w / (4 * toFloat columns) * 7
 
         heightt =
             if w > 675 then
-                round (toFloat w / (4 * toFloat columns) * 7)
+                round ratio
                 -- feed dimensions
 
             else
-                round (toFloat w / ratio)
+                round (toFloat w * 5 / 4)
     in
     [ Element.row
         [ width fill
@@ -422,6 +412,43 @@ defaultPageFromUrl str =
     expositionPath
 
 
+viewTitle : Int -> Int -> Maybe Exposition -> Element Msg
+viewTitle w columns exp =
+    let
+        fontSize =
+            max 15 (round (toFloat w / toFloat columns / 20))
+
+        --22 - columns
+        --round (toFloat w / toFloat columns / 20 + 3)
+    in
+    case exp of
+        Just exposition ->
+            column
+                [ --Border.color (rgb255 0 0 0)
+                  --, Border.width 2
+                  --, Border.rounded 3
+                  Element.centerX
+                , spacing 10
+                , paddingXY 5 25
+                ]
+                [ paragraph
+                    [ height fill
+                    , Font.center
+                    , Font.size (fontSize - columns)
+                    , Font.bold
+                    ]
+                    [ Element.newTabLink
+                        []
+                        { url = exposition.url
+                        , label = Element.text exposition.title
+                        }
+                    ]
+                ]
+
+        Nothing ->
+            Element.text "Waiting for exposition..."
+
+
 viewTitleAuthor : Int -> Int -> Maybe Exposition -> Element Msg
 viewTitleAuthor w columns exp =
     let
@@ -464,43 +491,6 @@ viewTitleAuthor w columns exp =
                         []
                         { url = authorLink exposition.author.id
                         , label = Element.text exposition.author.name
-                        }
-                    ]
-                ]
-
-        Nothing ->
-            Element.text "Waiting for exposition..."
-
-
-viewTitle : Int -> Int -> Maybe Exposition -> Element Msg
-viewTitle w columns exp =
-    let
-        fontSize =
-            max 15 (round (toFloat w / toFloat columns / 20))
-
-        --22 - columns
-        --round (toFloat w / toFloat columns / 20 + 3)
-    in
-    case exp of
-        Just exposition ->
-            column
-                [ --Border.color (rgb255 0 0 0)
-                  --, Border.width 2
-                  --, Border.rounded 3
-                  Element.centerX
-                , spacing 10
-                , paddingXY 5 25
-                ]
-                [ paragraph
-                    [ height fill
-                    , Font.center
-                    , Font.size (fontSize - columns)
-                    , Font.bold
-                    ]
-                    [ Element.newTabLink
-                        []
-                        { url = exposition.url
-                        , label = Element.text exposition.title
                         }
                     ]
                 ]
@@ -633,7 +623,10 @@ viewExposition w columns exp =
                                 }
                         }
                     )
-                , if imgHeight > 250 then
+                , if columns > 6 then
+                    Element.none
+
+                  else if imgHeight > 250 then
                     viewTitleAuthorAbstract w columns exp
 
                   else if imgHeight < 150 then
