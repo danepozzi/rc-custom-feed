@@ -320,18 +320,34 @@ defaultPadding =
 viewResearch : Int -> Int -> List (Maybe Exposition) -> List (Element Msg)
 viewResearch w columns exp =
     let
+        --imgHeight = round (toFloat w / toFloat (columns + 1))
         buttonWidth =
             30
 
-        imgHeight =
-            round (toFloat w / toFloat (columns + 1))
+        ratio =
+            case columns of
+                2 ->
+                    10 * 16
+
+                3 ->
+                    9 * 16
+
+                4 ->
+                    8 * 16
+
+                5 ->
+                    7 * 16
+
+                _ ->
+                    9 * 16
 
         heightt =
             if w > 675 then
-                round (toFloat w / 16 * 9)
+                round (toFloat w / (4 * toFloat columns) * 7)
+                -- feed dimensions
 
             else
-                round (toFloat w / 9 * 16)
+                round (toFloat w / ratio)
     in
     [ Element.row
         [ width fill
