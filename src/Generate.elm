@@ -107,11 +107,11 @@ view model =
             "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString
 
         iframeHeight =
-            if model.elements < 4 then
-                800
+            if model.elements < 7 then
+                round (7 / (4 * toFloat model.elements) * 950)
 
             else
-                500
+                round (1 / toFloat model.elements * 950)
 
         portalOptions =
             List.map portalOption (Dict.keys model.portals)
@@ -141,7 +141,7 @@ view model =
         , br [] []
         , div []
             [ iframe
-                [ src url, style "width" "100%", height iframeHeight ]
+                [ src url, style "width" "950px", height iframeHeight ]
                 []
             ]
         , div []
