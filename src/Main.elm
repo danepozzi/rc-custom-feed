@@ -329,6 +329,7 @@ viewResearch w columns exp =
                 toFloat w / toFloat columns
 
             else
+                -- this gives following ratios: 7/4 7/8 7/12 7/16 7/20 7/24
                 toFloat w / (4 * toFloat columns) * 7
 
         heightt =
