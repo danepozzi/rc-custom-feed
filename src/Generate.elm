@@ -44,9 +44,11 @@ init _ =
         Err error ->
             ( { portal = Nothing, keyword = "", elements = 2, order = "recent", portals = Dict.empty, error = Just (errorToString error) }, Cmd.none )
 
+
 citableIframe : String -> Html Msg
 citableIframe url =
-    input [ type_ "text", value url ] [ ]
+    input [ type_ "text", value url ] []
+
 
 type Msg
     = Increment
@@ -135,7 +137,7 @@ view model =
             , select [ onInput SetOrder ]
                 (List.map orderOption [ "recent", "random" ])
             ]
-        , div [] [ citableIframe ("<p><iframe src=" ++ q url ++ " width=\"100%\" height=" ++ String.fromInt iframeHeight ++ "\" style=\"border: none;\"></iframe></p>")]
+        , div [] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"<iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
         , br [] []
         , div []
             [ iframe
@@ -146,10 +148,12 @@ view model =
             [ text "Copy the following HTML code in the HTML tool in your block page:" ]
         ]
 
+
 q : String -> String
 q str =
     "\"" ++ str ++ "\""
-        
+
+
 portalOption : String -> Html msg
 portalOption portalName =
     option [ value portalName ] [ text portalName ]
