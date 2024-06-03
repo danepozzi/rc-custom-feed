@@ -108,10 +108,10 @@ view model =
 
         iframeHeight =
             if model.elements < 7 then
-                round (7 / (4 * toFloat model.elements) * 950)
+                round (7 / (4 * toFloat model.elements) * 110)
 
             else
-                round (1 / toFloat model.elements * 950)
+                round (1 / toFloat model.elements * 1100)
 
         portalOptions =
             List.map portalOption (Dict.keys model.portals)
@@ -141,7 +141,7 @@ view model =
         , br [] []
         , div []
             [ iframe
-                [ src url, style "width" "950px", height iframeHeight ]
+                [ src url, style "width" "1100px", height iframeHeight ]
                 []
             ]
         ]
