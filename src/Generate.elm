@@ -108,7 +108,7 @@ view model =
 
         iframeHeight =
             if model.elements < 7 then
-                round (7 / (4 * toFloat model.elements) * 110)
+                round (7 / (4 * toFloat model.elements) * 1100)
 
             else
                 round (1 / toFloat model.elements * 1100)
