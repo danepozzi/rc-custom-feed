@@ -1,0 +1,92 @@
+/* template for responsive iframes with custom aspect ratio
+in elm aspect ratios are calculated like this: (4 * columns) / 7
+apsect ratios are:
+1 column: 4/7
+2 columns: 8/7
+3 columns: 12/7
+4 columns: 16/7
+5 columns: 20/7
+6 columns: 24/7
+7 or more: 7/1
+aspect ratio at breakpoint 675px is: 4/5
+*/
+
+.html-text-editor-content div.contdiv1,
+.html-text-editor-content div.contdiv2,
+.html-text-editor-content div.contdiv3,
+.html-text-editor-content div.contdiv4,
+.html-text-editor-content div.contdiv5,
+.html-text-editor-content div.contdiv6,
+.html-text-editor-content div.contdiv7 {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+}
+
+.html-text-editor-content div.contdiv1 {
+    padding-top: 175.00%;
+    /* 7:4 Aspect Ratio, 1 column layout */
+}
+
+.html-text-editor-content div.contdiv2 {
+    padding-top: 87.5%;
+    /* 7:8 Aspect Ratio, 2 columnns layout */
+}
+
+.html-text-editor-content div.contdiv3 {
+    padding-top: 58.33%;
+    /* 7:12 Aspect Ratio, 3 columnns layout */
+}
+
+.html-text-editor-content div.contdiv4 {
+    padding-top: 43.75%;
+    /* 7:16 Aspect Ratio, 4 columnns layout */
+}
+
+.html-text-editor-content div.contdiv5 {
+    padding-top: 35.00%;
+    /* 7:20 Aspect Ratio, 5 columnns layout */
+}
+
+.html-text-editor-content div.contdiv6 {
+    padding-top: 29.16%;
+    /* 7:24 Aspect Ratio, 6 columnns layout */
+}
+
+.html-text-editor-content div.contdiv7 {
+    padding-top: 14.28%;
+    /* 1:7 Aspect Ratio, 7 or more columnns */
+}
+
+.contdiv1 iframe,
+.contdiv2 iframe,
+.contdiv3 iframe,
+.contdiv4 iframe,
+.contdiv5 iframe,
+.contdiv6 iframe,
+.contdiv7 iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 675px) {
+
+    .html-text-editor-content div.contdiv1,
+    .html-text-editor-content div.contdiv2,
+    .html-text-editor-content div.contdiv3,
+    .html-text-editor-content div.contdiv4,
+    .html-text-editor-content div.contdiv5,
+    .html-text-editor-content div.contdiv6,
+    .html-text-editor-content div.contdiv7 {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        padding-top: 125.00%;
+        /* 4:5 smartphone*/
+    }
+}
