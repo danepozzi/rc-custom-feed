@@ -27,6 +27,8 @@ kill -9 <PID>
 - [c] arrow size ?
 - [d] arrow flash on hover
 - [d] clever iframe height
+- [d] try full width layout
+- [d] add issue as filter by ID
 
 ## Iframe Height Question:
 Some ideas to make it somehow responsive:
