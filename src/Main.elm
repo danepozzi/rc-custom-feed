@@ -347,8 +347,8 @@ viewResearch w columns exp =
         , spacing 25
 
         --, Border.color (rgb255 255 0 0)
-        , Border.width 2
-        , Border.rounded 3
+        --, Border.width 2
+        --, Border.rounded 3
         , Element.alignTop
         ]
         (List.concat
@@ -605,8 +605,8 @@ viewExposition w columns exp =
                 , clipY
 
                 --, Border.color (rgb255 0 0 0)
-                , Border.width 2
-                , Border.rounded 3
+                --, Border.width 2
+                --, Border.rounded 3
                 , Element.alignTop
                 ]
                 [ el
