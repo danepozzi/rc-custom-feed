@@ -345,7 +345,8 @@ viewResearch w columns exp =
         , height (px heightt)
         , paddingEach { defaultPadding | left = 0 }
         , spacing 25
-        , Border.color (rgb255 255 0 0)
+
+        --, Border.color (rgb255 255 0 0)
         , Border.width 2
         , Border.rounded 3
         , Element.alignTop
@@ -602,7 +603,8 @@ viewExposition w columns exp =
             Element.column
                 [ width fill
                 , clipY
-                , Border.color (rgb255 0 0 0)
+
+                --, Border.color (rgb255 0 0 0)
                 , Border.width 2
                 , Border.rounded 3
                 , Element.alignTop
