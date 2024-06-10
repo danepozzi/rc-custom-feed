@@ -74,7 +74,7 @@ expositionDecoder =
         --(Json.Decode.field "meta-data-page" Json.Decode.string)
         (Json.Decode.field "title" Json.Decode.string)
         (Json.Decode.field "default-page" Json.Decode.string)
-        (Json.Decode.field "issue" issueDecoder)
+        (Json.Decode.maybe (Json.Decode.field "issue" issueDecoder))
 
 
 expositionsDecoder : Json.Decode.Decoder (List Exposition)
