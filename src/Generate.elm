@@ -20,6 +20,7 @@ portalDecoder =
 
 type alias Model =
     { portal : Maybe Int
+    , issue : Maybe Int
     , keyword : String
     , elements : Int
     , order : String
@@ -39,10 +40,10 @@ init _ =
     in
     case decodedPortals of
         Ok portals ->
-            ( { portal = Nothing, keyword = "", elements = 2, order = "recent", portals = portals, error = Nothing }, Cmd.none )
+            ( { portal = Nothing, issue = Nothing, keyword = "", elements = 2, order = "recent", portals = portals, error = Nothing }, Cmd.none )
 
         Err error ->
-            ( { portal = Nothing, keyword = "", elements = 2, order = "recent", portals = Dict.empty, error = Just (errorToString error) }, Cmd.none )
+            ( { portal = Nothing, issue = Nothing, keyword = "", elements = 2, order = "recent", portals = Dict.empty, error = Just (errorToString error) }, Cmd.none )
 
 
 citableIframe : String -> Html Msg
@@ -56,6 +57,7 @@ type Msg
     | UpdateKeyword String
     | SetOrder String
     | SetPortal String
+    | SetIssueID String
     | FetchData
 
 
@@ -81,6 +83,13 @@ update msg model =
               in
               { model
                 | portal = newPortal
+              }
+            , Cmd.none
+            )
+
+        SetIssueID issueID ->
+            ( { model
+                | issue = String.toInt issueID
               }
             , Cmd.none
             )
@@ -115,6 +124,14 @@ view model =
 
         portalOptions =
             List.map portalOption (Dict.keys model.portals)
+
+        issueID =
+            case model.issue of
+                Just issue ->
+                    String.fromInt issue
+
+                Nothing ->
+                    ""
     in
     div [ align "center" ]
         [ div []
@@ -136,6 +153,7 @@ view model =
             , text "Order of Elements: "
             , select [ onInput SetOrder ]
                 (List.map orderOption [ "recent", "random" ])
+            , input [ placeholder "Type your keyword here", value issueID, onInput SetIssueID ] []
             ]
         , div [] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"><iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
         , br [] []
