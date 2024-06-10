@@ -57,6 +57,12 @@ parametersFromAppUrl url =
             url.queryParameters
             |> Maybe.andThen List.head
         )
+        (Dict.get
+            "issue"
+            url.queryParameters
+            |> Maybe.andThen List.head
+            |> Maybe.andThen String.toInt
+        )
 
 
 shuffleWithSeed : Int -> List a -> List a
@@ -98,6 +104,7 @@ type alias Parameters =
     , elements : Maybe Int
     , order : Maybe String
     , portal : Maybe String
+    , issue : Maybe Int
     }
 
 
@@ -198,10 +205,18 @@ update msg model =
         RequestUrl _ ->
             ( model, Cmd.none )
 
-        DataReceived (Ok expositions) ->
+        DataReceived (Ok exps) ->
             let
                 _ =
                     Debug.log "parameters" model.parameters
+
+                expositions =
+                    case model.parameters.issue of
+                        Just id ->
+                            List.filter (isExpositionInIssue id) exps
+
+                        Nothing ->
+                            exps
 
                 exp =
                     case model.parameters.order of
@@ -269,6 +284,11 @@ sendQuery releaseType keyw portal =
         { url = url
         , expect = Http.expectJson DataReceived Decode.expositionsDecoder
         }
+
+
+isExpositionInIssue : Int -> Exposition -> Bool
+isExpositionInIssue issueID exp =
+    exp.issue.id == issueID
 
 
 
