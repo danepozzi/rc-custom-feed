@@ -14,7 +14,7 @@ type alias Exposition =
     , thumb : Maybe String
     , title : String
     , url : String
-    , issue : Issue
+    , issue : Maybe Issue
 
     --, type_ : String
     }
