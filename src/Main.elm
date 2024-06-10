@@ -218,6 +218,9 @@ update msg model =
                         Nothing ->
                             exps
 
+                _ =
+                    Debug.log "filtered expositions" expositions
+
                 exp =
                     case model.parameters.order of
                         Just "recent" ->
