@@ -14,6 +14,7 @@ type alias Exposition =
     , thumb : Maybe String
     , title : String
     , url : String
+    , issue : Issue
 
     --, type_ : String
     }
@@ -22,6 +23,13 @@ type alias Exposition =
 type alias Author =
     { id : Int
     , name : String
+    }
+
+
+type alias Issue =
+    { id : Int
+    , number : Int
+    , title : String
     }
 
 
@@ -45,9 +53,17 @@ authorDecoder =
         (Json.Decode.field "name" Json.Decode.string)
 
 
+issueDecoder : Json.Decode.Decoder Issue
+issueDecoder =
+    Json.Decode.map3 Issue
+        (Json.Decode.field "id" Json.Decode.int)
+        (Json.Decode.field "number" Json.Decode.int)
+        (Json.Decode.field "title" Json.Decode.string)
+
+
 expositionDecoder : Json.Decode.Decoder Exposition
 expositionDecoder =
-    Json.Decode.map5 Exposition
+    Json.Decode.map6 Exposition
         (Json.Decode.field "abstract" Json.Decode.string)
         --(Json.Decode.field "default-page" Json.Decode.string)
         --(Json.Decode.field "id" Json.Decode.int)
@@ -58,6 +74,7 @@ expositionDecoder =
         --(Json.Decode.field "meta-data-page" Json.Decode.string)
         (Json.Decode.field "title" Json.Decode.string)
         (Json.Decode.field "default-page" Json.Decode.string)
+        (Json.Decode.field "issue" issueDecoder)
 
 
 expositionsDecoder : Json.Decode.Decoder (List Exposition)
