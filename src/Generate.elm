@@ -112,8 +112,16 @@ view model =
         portalAsString =
             portalIdToString portalId
 
+        issueID =
+            case model.issue of
+                Just issue ->
+                    String.fromInt issue
+
+                Nothing ->
+                    ""
+
         url =
-            "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString
+            "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString ++ "&issue=" ++ issueID
 
         iframeHeight =
             if model.elements < 7 then
@@ -124,14 +132,6 @@ view model =
 
         portalOptions =
             List.map portalOption (Dict.keys model.portals)
-
-        issueID =
-            case model.issue of
-                Just issue ->
-                    String.fromInt issue
-
-                Nothing ->
-                    ""
     in
     div [ align "center" ]
         [ div []
@@ -153,7 +153,8 @@ view model =
             , text "Order of Elements: "
             , select [ onInput SetOrder ]
                 (List.map orderOption [ "recent", "random" ])
-            , input [ placeholder "Type your keyword here", value issueID, onInput SetIssueID ] []
+            , text "Issue: "
+            , input [ placeholder "ID", value issueID, onInput SetIssueID ] []
             ]
         , div [] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"><iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
         , br [] []
