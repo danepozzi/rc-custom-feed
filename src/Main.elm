@@ -288,7 +288,12 @@ sendQuery releaseType keyw portal =
 
 isExpositionInIssue : Int -> Exposition -> Bool
 isExpositionInIssue issueID exp =
-    exp.issue.id == issueID
+    case exp.issue of
+        Just iss ->
+            iss.id == issueID
+
+        Nothing ->
+            False
 
 
 
