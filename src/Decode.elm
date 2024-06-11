@@ -28,7 +28,7 @@ type alias Author =
 
 type alias Issue =
     { id : Int
-    , number : Int
+    , number : String
     , title : String
     }
 
@@ -57,7 +57,7 @@ issueDecoder : Json.Decode.Decoder Issue
 issueDecoder =
     Json.Decode.map3 Issue
         (Json.Decode.field "id" Json.Decode.int)
-        (Json.Decode.field "number" Json.Decode.int)
+        (Json.Decode.field "number" Json.Decode.string)
         (Json.Decode.field "title" Json.Decode.string)
 
 

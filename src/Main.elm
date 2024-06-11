@@ -291,11 +291,23 @@ sendQuery releaseType keyw portal =
 
 isExpositionInIssue : Int -> Exposition -> Bool
 isExpositionInIssue issueID exp =
+    let
+        _ =
+            Debug.log "issueID" issueID
+    in
     case exp.issue of
         Just iss ->
+            let
+                _ =
+                    Debug.log "iss" iss.id
+            in
             iss.id == issueID
 
         Nothing ->
+            let
+                _ =
+                    Debug.log "iss" "Nothinggggggg"
+            in
             False
 
 
