@@ -353,7 +353,7 @@ viewResearch wi columns exp =
             30
 
         w =
-            min wi (columns * 512)
+            min wi (columns * 675)
 
         -- preserve traditional block layout
         ratio =
@@ -450,7 +450,8 @@ viewTitle : Int -> Int -> Maybe Exposition -> Element Msg
 viewTitle w columns exp =
     let
         fontSize =
-            max 15 (round (toFloat w / toFloat columns / 20))
+            --max 15 (round (toFloat w / toFloat columns / 20))
+            max 16 (round (toFloat w / (toFloat columns / 2) / 20))
 
         --22 - columns
         --round (toFloat w / toFloat columns / 20 + 3)
@@ -487,7 +488,8 @@ viewTitleAuthor : Int -> Int -> Maybe Exposition -> Element Msg
 viewTitleAuthor w columns exp =
     let
         fontSize =
-            max 15 (round (toFloat w / toFloat columns / 20))
+            --max 15 (round (toFloat w / toFloat columns / 20))
+            max 16 (round (toFloat w / toFloat columns / 20))
 
         --22 - columns
         --round (toFloat w / toFloat columns / 20 + 3)
@@ -553,6 +555,7 @@ viewTitleAuthorAbstract w columns exp =
                 fontSize =
                     max 15 (round (toFloat w / toFloat columns / 20))
 
+                --max 16 (round (toFloat w / (toFloat columns / 2) / 20))
                 --22 - columns
                 --round (toFloat w / toFloat columns / 20)
             in
@@ -635,7 +638,6 @@ viewExposition w columns exp =
             Element.column
                 [ width fill
                 , clipY
-                , alignLeft
 
                 --, Border.color (rgb255 0 0 0)
                 --, Border.width 2
@@ -659,14 +661,14 @@ viewExposition w columns exp =
                                 }
                         }
                     )
-                , if columns > 6 then
+                , if imgHeight < 100 then
                     Element.none
-
-                  else if imgHeight > 250 then
-                    viewTitleAuthorAbstract w columns exp
 
                   else if imgHeight < 150 then
                     viewTitle w columns exp
+
+                  else if imgHeight > 250 then
+                    viewTitleAuthorAbstract w columns exp
 
                   else
                     viewTitleAuthor w columns exp
