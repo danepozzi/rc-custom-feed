@@ -346,12 +346,16 @@ defaultPadding =
 
 
 viewResearch : Int -> Int -> List (Maybe Exposition) -> List (Element Msg)
-viewResearch w columns exp =
+viewResearch wi columns exp =
     let
         --imgHeight = round (toFloat w / toFloat (columns + 1))
         buttonWidth =
             30
 
+        w =
+            min wi (columns * 512)
+
+        -- preserve traditional block layout
         ratio =
             if columns > 6 then
                 toFloat w / toFloat columns
@@ -369,7 +373,7 @@ viewResearch w columns exp =
                 round (toFloat w * 5 / 4)
     in
     [ Element.row
-        [ width fill
+        [ width (fill |> maximum w) -- preserve traditional block layout
         , height (px heightt)
         , paddingEach { defaultPadding | left = 0 }
         , spacing 25
@@ -631,6 +635,7 @@ viewExposition w columns exp =
             Element.column
                 [ width fill
                 , clipY
+                , alignLeft
 
                 --, Border.color (rgb255 0 0 0)
                 --, Border.width 2
