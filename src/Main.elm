@@ -379,6 +379,14 @@ viewResearch : Int -> Int -> Feed -> List (Maybe Exposition) -> List (Element Ms
 viewResearch wi columns feed exp =
     let
         --imgHeight = round (toFloat w / toFloat (columns + 1))
+        viewExposition =
+            case feed of
+                Wide ->
+                    viewExpositionWide
+
+                Column ->
+                    viewExpositionColumn
+
         buttonWidth =
             30
 
@@ -653,8 +661,79 @@ viewTitleAuthorAbstract w columns exp =
             Element.text "Waiting for exposition..."
 
 
-viewExposition : Int -> Int -> Maybe Exposition -> Element Msg
-viewExposition w columns exp =
+viewExpositionColumn : Int -> Int -> Maybe Exposition -> Element Msg
+viewExpositionColumn w columns exp =
+    case exp of
+        Just exposition ->
+            let
+                expositionPath =
+                    defaultPageFromUrl exposition.url
+
+                image =
+                    case Maybe.withDefault "" exposition.thumb of
+                        "" ->
+                            "https://keywords.sarconference2016.net/screenshots2" ++ expositionPath ++ "/0.png"
+
+                        _ ->
+                            Maybe.withDefault "" exposition.thumb
+
+                --amountOfText =
+                --String.length shortAbstract + String.length exposition.title
+                -- "smart" scaling
+                imgHeight =
+                    round (toFloat w / toFloat (columns + 1))
+
+                imageHeight =
+                    px imgHeight
+
+                --px (round (toFloat w / 4))
+                --px (200 + (500 // amountOfText * 20))
+            in
+            Element.column
+                [ width fill
+                , clipY
+
+                --, Border.color (rgb255 0 0 0)
+                --, Border.width 2
+                --, Border.rounded 3
+                , Element.alignTop
+                ]
+                [ el
+                    [ --Background.color (rgb255 0 250 160)
+                      Element.centerX
+                    ]
+                    (Element.newTabLink
+                        []
+                        { url = exposition.url --image
+                        , label =
+                            Element.image
+                                [ width fill
+                                , height imageHeight
+                                ]
+                                { src = image
+                                , description = "" --image ++ " preview image of the exposition"
+                                }
+                        }
+                    )
+                , if columns > 6 then
+                    Element.none
+
+                  else if imgHeight > 250 then
+                    viewTitleAuthorAbstract w columns exp
+
+                  else if imgHeight < 150 then
+                    viewTitle w columns exp
+
+                  else
+                    viewTitleAuthor w columns exp
+                ]
+
+        Nothing ->
+            Element.text "Loading..."
+
+
+viewExpositionWide : Int -> Int -> Maybe Exposition -> Element Msg
+viewExpositionWide w columns exp =
     case exp of
         Just exposition ->
             let
