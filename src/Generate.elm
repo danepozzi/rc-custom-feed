@@ -127,7 +127,7 @@ view model =
                     ""
 
         url =
-            "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString ++ "&issue=" ++ issueID
+            "https://rcfeed.sarconference2016.net/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString ++ "&issue=" ++ issueID ++ "&feed=" ++ model.width
 
         iframeHeight =
             if model.elements < 7 then

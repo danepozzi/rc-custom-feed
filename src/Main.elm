@@ -26,6 +26,29 @@ type Release
     | Development
 
 
+type Feed
+    = Wide
+    | Column
+
+
+stringToFeed : Maybe String -> Feed
+stringToFeed string =
+    case string of
+        Just s ->
+            case s of
+                "wide" ->
+                    Wide
+
+                "column" ->
+                    Column
+
+                _ ->
+                    Column
+
+        _ ->
+            Column
+
+
 baseUrl r =
     case r of
         Live ->
@@ -62,6 +85,12 @@ parametersFromAppUrl url =
             url.queryParameters
             |> Maybe.andThen List.head
             |> Maybe.andThen String.toInt
+        )
+        (Dict.get
+            "feed"
+            url.queryParameters
+            |> Maybe.andThen List.head
+            |> stringToFeed
         )
 
 
@@ -105,6 +134,7 @@ type alias Parameters =
     , order : Maybe String
     , portal : Maybe String
     , issue : Maybe Int
+    , feed : Feed
     }
 
 
@@ -315,7 +345,7 @@ view model =
                             Carousel.view
                                 { carousel = model.expositions
                                 , onNext = NextExposition
-                                , viewSlide = viewResearch model.windowSize.w (Maybe.withDefault 3 model.parameters.elements)
+                                , viewSlide = viewResearch model.windowSize.w (Maybe.withDefault 3 model.parameters.elements) model.parameters.feed
                                 , num = Maybe.withDefault 1 model.parameters.elements - 1
                                 }
 
@@ -323,7 +353,7 @@ view model =
                             Carousel.view
                                 { carousel = model.expositions
                                 , onNext = NextExposition
-                                , viewSlide = viewResearch model.windowSize.w 1
+                                , viewSlide = viewResearch model.windowSize.w 1 model.parameters.feed
                                 , num = 0
                                 }
                         )
@@ -345,8 +375,8 @@ defaultPadding =
     { top = 0, bottom = 0, left = 0, right = 0 }
 
 
-viewResearch : Int -> Int -> List (Maybe Exposition) -> List (Element Msg)
-viewResearch wi columns exp =
+viewResearch : Int -> Int -> Feed -> List (Maybe Exposition) -> List (Element Msg)
+viewResearch wi columns feed exp =
     let
         --imgHeight = round (toFloat w / toFloat (columns + 1))
         buttonWidth =
@@ -356,13 +386,29 @@ viewResearch wi columns exp =
             min wi (columns * 675)
 
         -- preserve traditional block layout
-        ratio =
+        columnRatio =
             if columns > 6 then
                 toFloat w / toFloat columns
 
             else
                 -- this gives following ratios: 7/4 7/8 7/12 7/16 7/20 7/24
                 toFloat w / (4 * toFloat columns) * 7
+
+        wideRatio =
+            if columns > 10 then
+                toFloat w / toFloat columns
+
+            else
+                -- this gives following ratios: 7/4 7/8 7/12 7/16 7/20 7/24
+                toFloat w / (4 * toFloat columns) * 7
+
+        ratio =
+            case feed of
+                Wide ->
+                    wideRatio
+
+                Column ->
+                    columnRatio
 
         heightt =
             if w > 675 then
