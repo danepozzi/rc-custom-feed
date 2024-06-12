@@ -2,6 +2,7 @@ module Generate exposing (main)
 
 import Browser exposing (..)
 import Dict exposing (Dict)
+import Element exposing (Column)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
@@ -25,6 +26,7 @@ type alias Model =
     , elements : Int
     , order : String
     , portals : PortalDict
+    , width : String
     , error : Maybe String
     }
 
@@ -40,10 +42,10 @@ init _ =
     in
     case decodedPortals of
         Ok portals ->
-            ( { portal = Nothing, issue = Nothing, keyword = "", elements = 2, order = "recent", portals = portals, error = Nothing }, Cmd.none )
+            ( { portal = Nothing, issue = Nothing, width = "wide", keyword = "", elements = 2, order = "recent", portals = portals, error = Nothing }, Cmd.none )
 
         Err error ->
-            ( { portal = Nothing, issue = Nothing, keyword = "", elements = 2, order = "recent", portals = Dict.empty, error = Just (errorToString error) }, Cmd.none )
+            ( { portal = Nothing, issue = Nothing, width = "wide", keyword = "", elements = 2, order = "recent", portals = Dict.empty, error = Just (errorToString error) }, Cmd.none )
 
 
 citableIframe : String -> Html Msg
@@ -56,6 +58,7 @@ type Msg
     | Decrement
     | UpdateKeyword String
     | SetOrder String
+    | SetIframeWidth String
     | SetPortal String
     | SetIssueID String
     | FetchData
@@ -75,6 +78,9 @@ update msg model =
 
         SetOrder newOrder ->
             ( { model | order = newOrder }, Cmd.none )
+
+        SetIframeWidth newWidth ->
+            ( { model | width = newWidth }, Cmd.none )
 
         SetPortal portalName ->
             ( let
@@ -142,6 +148,11 @@ view model =
             [ text "Portal: "
             , select [ onInput SetPortal ]
                 portalOptions
+            , text "Issue: "
+            , input [ placeholder "ID", value issueID, onInput SetIssueID ] []
+            , text "Feed: "
+            , select [ onInput SetIframeWidth ]
+                (List.map orderOption [ "wide", "column" ])
             ]
         , div []
             [ text "Keyword: "
@@ -153,16 +164,30 @@ view model =
             , text "Order of Elements: "
             , select [ onInput SetOrder ]
                 (List.map orderOption [ "recent", "random" ])
-            , text "Issue: "
-            , input [ placeholder "ID", value issueID, onInput SetIssueID ] []
             ]
         , div [] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"><iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
         , br [] []
-        , div []
-            [ iframe
-                [ src url, style "width" "1100px", height iframeHeight ]
-                []
-            ]
+        , case model.width of
+            "column" ->
+                div []
+                    [ iframe
+                        [ src url, style "width" "1024px", height iframeHeight ]
+                        []
+                    ]
+
+            "wide" ->
+                div []
+                    [ iframe
+                        [ src url, style "width" "100%", height iframeHeight ]
+                        []
+                    ]
+
+            _ ->
+                div []
+                    [ iframe
+                        [ src url, style "width" "100%", height iframeHeight ]
+                        []
+                    ]
         ]
 
 
