@@ -50,7 +50,7 @@ init _ =
 
 citableIframe : String -> Html Msg
 citableIframe url =
-    input [ type_ "text", value url ] []
+    input [ style "width" "100%", type_ "text", value url ] []
 
 
 type Msg
