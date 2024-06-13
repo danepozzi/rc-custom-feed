@@ -137,7 +137,6 @@ type Msg
     | NextExposition
     | PreviousExposition
     | DataReceived (Result Http.Error (List Exposition))
-    | UpdateParameters Parameters
     | WindowWasResized Int Int
 
 
@@ -272,7 +271,7 @@ update msg model =
                 _ =
                     Debug.log "parameters" model.parameters
 
-                expo =
+                expositions =
                     case model.parameters.issue of
                         Just id ->
                             List.filter (isExpositionInIssue id) exps
@@ -281,25 +280,28 @@ update msg model =
                             exps
 
                 _ =
-                    Debug.log "filtered expositions" expo
+                    Debug.log "filtered expositions" expositions
 
                 exp =
                     case model.parameters.order of
                         Just "recent" ->
-                            expo
+                            expositions
 
                         Just "random" ->
-                            shuffleWithSeed model.seed expo
+                            shuffleWithSeed model.seed expositions
 
                         Nothing ->
-                            expo
+                            expositions
 
                         Just _ ->
-                            expo
+                            expositions
+
+                results =
+                    List.length expositions
             in
             ( { model
                 | expositions = Carousel.create exp (Maybe.withDefault 1 model.parameters.elements)
-                , results = List.length expo
+                , results = results
               }
             , Cmd.none
             )
@@ -316,13 +318,6 @@ update msg model =
 
         PreviousExposition ->
             ( { model | expositions = Carousel.previous model.expositions }, Cmd.none )
-
-        UpdateParameters p ->
-            let
-                _ =
-                    Debug.log "parameters" p
-            in
-            ( { model | parameters = p }, Cmd.none )
 
         WindowWasResized w h ->
             ( { model | windowSize = { w = w, h = h } }, Cmd.none )
@@ -369,6 +364,16 @@ isExpositionInIssue issueID exp =
 view : Model -> Browser.Document Msg
 view model =
     let
+        elements =
+            Maybe.withDefault 2 model.parameters.elements
+
+        elem =
+            if model.results < elements then
+                model.results
+
+            else
+                elements
+
         content =
             case model.view of
                 Carousel ->
@@ -378,8 +383,8 @@ view model =
                             Carousel.view
                                 { carousel = model.expositions
                                 , onNext = NextExposition
-                                , viewSlide = viewResearch model model.windowSize.w (Maybe.withDefault 3 model.parameters.elements) model.parameters.feed
-                                , num = Maybe.withDefault 1 model.parameters.elements - 1
+                                , viewSlide = viewResearch model model.windowSize.w elem model.parameters.feed
+                                , num = elem - 1
                                 }
 
                          else
