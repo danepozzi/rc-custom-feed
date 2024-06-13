@@ -50,7 +50,7 @@ init _ =
 
 citableIframe : String -> Html Msg
 citableIframe url =
-    input [ style "width" "80%", type_ "text", value url ] []
+    input [ style "width" "70%", type_ "text", value url ] []
 
 
 type Msg
@@ -134,12 +134,41 @@ view model =
         url =
             "https://rcdata.org/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString ++ "&issue=" ++ issueID ++ "&feed=" ++ model.width
 
-        iframeHeight =
-            if model.elements < 7 then
-                round (7 / (4 * toFloat model.elements) * 1100)
+        maxElementsWithTitle =
+            if model.width == "column" then
+                7
 
             else
-                round (1 / toFloat model.elements * 1100)
+                11
+
+        heightMultiplier =
+            if model.width == "column" then
+                1100
+
+            else
+                2000
+
+        iFrameDiv =
+            if model.width == "column" then
+                div []
+                    [ iframe
+                        [ src url, style "max-width" "1024px", height iframeHeight ]
+                        []
+                    ]
+
+            else
+                div []
+                    [ iframe
+                        [ src url, style "width" "100%", height iframeHeight ]
+                        []
+                    ]
+
+        iframeHeight =
+            if model.elements < maxElementsWithTitle then
+                round (7 / (4 * toFloat model.elements) * heightMultiplier)
+
+            else
+                round (1 / toFloat model.elements * heightMultiplier)
 
         portalOptions =
             List.map portalOption (Dict.keys model.portals)
@@ -176,27 +205,7 @@ view model =
             )
         , div [ style "width" "100%" ] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"><iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
         , br [] []
-        , case model.width of
-            "column" ->
-                div []
-                    [ iframe
-                        [ src url, style "width" "1024px", height iframeHeight ]
-                        []
-                    ]
-
-            "wide" ->
-                div []
-                    [ iframe
-                        [ src url, style "width" "100%", height iframeHeight ]
-                        []
-                    ]
-
-            _ ->
-                div []
-                    [ iframe
-                        [ src url, style "width" "100%", height iframeHeight ]
-                        []
-                    ]
+        , iFrameDiv
         ]
 
 
