@@ -463,6 +463,9 @@ viewResearch model wi columns feed exp =
 
             else
                 round (toFloat w * 5 / 4)
+
+        elem =
+            Maybe.withDefault 2 model.parameters.elements
     in
     case model.parameters.mode of
         Generate ->
@@ -480,7 +483,11 @@ viewResearch model wi columns feed exp =
                     , Element.alignTop
                     ]
                     (List.concat
-                        [ [ Input.button
+                        [ if model.results <= elem then
+                            []
+
+                          else
+                            [ Input.button
                                 [ width <| px buttonWidth
                                 , height fill
                                 , Element.focused
@@ -497,11 +504,15 @@ viewResearch model wi columns feed exp =
                                 { onPress = Just PreviousExposition
                                 , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
                                 }
-                          ]
+                            ]
                         , List.map
                             (columns |> (w |> viewExposition))
                             exp
-                        , [ Input.button
+                        , if model.results < elem then
+                            []
+
+                          else
+                            [ Input.button
                                 [ width <| px buttonWidth
                                 , height fill
                                 , Element.focused
@@ -518,7 +529,7 @@ viewResearch model wi columns feed exp =
                                 { onPress = Just NextExposition
                                 , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
                                 }
-                          ]
+                            ]
                         ]
                     )
                 ]
