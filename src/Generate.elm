@@ -42,7 +42,7 @@ init _ =
     in
     case decodedPortals of
         Ok portals ->
-            ( { portal = Nothing, issue = Nothing, width = "wide", keyword = "", elements = 2, order = "recent", portals = portals, error = Nothing }, Cmd.none )
+            ( { portal = Nothing, issue = Nothing, width = "wide", keyword = "", elements = 4, order = "recent", portals = portals, error = Nothing }, Cmd.none )
 
         Err error ->
             ( { portal = Nothing, issue = Nothing, width = "wide", keyword = "", elements = 2, order = "recent", portals = Dict.empty, error = Just (errorToString error) }, Cmd.none )
@@ -152,14 +152,14 @@ view model =
             if model.width == "column" then
                 div []
                     [ iframe
-                        [ src url, style "width" "100%", style "max-width" "1024px", height iframeHeight ]
+                        [ src (url ++ "&mode=generate"), style "width" "100%", style "max-width" "1024px", height iframeHeight ]
                         []
                     ]
 
             else
                 div []
                     [ iframe
-                        [ src url, style "width" "100%", height iframeHeight ]
+                        [ src (url ++ "&mode=generate"), style "width" "100%", height iframeHeight ]
                         []
                     ]
 

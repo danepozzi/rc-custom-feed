@@ -31,6 +31,11 @@ type Feed
     | Column
 
 
+type Mode
+    = Generate
+    | Display
+
+
 stringToFeed : Maybe String -> Feed
 stringToFeed string =
     case string of
@@ -47,6 +52,24 @@ stringToFeed string =
 
         _ ->
             Column
+
+
+stringToMode : Maybe String -> Mode
+stringToMode string =
+    case string of
+        Just s ->
+            case s of
+                "generate" ->
+                    Generate
+
+                "display" ->
+                    Display
+
+                _ ->
+                    Display
+
+        _ ->
+            Display
 
 
 baseUrl r =
@@ -92,6 +115,12 @@ parametersFromAppUrl url =
             |> Maybe.andThen List.head
             |> stringToFeed
         )
+        (Dict.get
+            "mode"
+            url.queryParameters
+            |> Maybe.andThen List.head
+            |> stringToMode
+        )
 
 
 shuffleWithSeed : Int -> List a -> List a
@@ -120,6 +149,7 @@ type alias Model =
     , view : View
     , windowSize : { w : Int, h : Int }
     , release : Release
+    , results : Int
     }
 
 
@@ -135,6 +165,7 @@ type alias Parameters =
     , portal : Maybe String
     , issue : Maybe Int
     , feed : Feed
+    , mode : Mode
     }
 
 
@@ -211,6 +242,7 @@ init config url navKey =
             , seed = cfg.seed
             , windowSize = { w = cfg.width, h = cfg.height }
             , release = cfg.release
+            , results = 0
             }
 
         _ =
@@ -240,7 +272,7 @@ update msg model =
                 _ =
                     Debug.log "parameters" model.parameters
 
-                expositions =
+                expo =
                     case model.parameters.issue of
                         Just id ->
                             List.filter (isExpositionInIssue id) exps
@@ -249,24 +281,25 @@ update msg model =
                             exps
 
                 _ =
-                    Debug.log "filtered expositions" expositions
+                    Debug.log "filtered expositions" expo
 
                 exp =
                     case model.parameters.order of
                         Just "recent" ->
-                            expositions
+                            expo
 
                         Just "random" ->
-                            shuffleWithSeed model.seed expositions
+                            shuffleWithSeed model.seed expo
 
                         Nothing ->
-                            expositions
+                            expo
 
                         Just _ ->
-                            expositions
+                            expo
             in
             ( { model
                 | expositions = Carousel.create exp (Maybe.withDefault 1 model.parameters.elements)
+                , results = List.length expo
               }
             , Cmd.none
             )
@@ -345,7 +378,7 @@ view model =
                             Carousel.view
                                 { carousel = model.expositions
                                 , onNext = NextExposition
-                                , viewSlide = viewResearch model.windowSize.w (Maybe.withDefault 3 model.parameters.elements) model.parameters.feed
+                                , viewSlide = viewResearch model model.windowSize.w (Maybe.withDefault 3 model.parameters.elements) model.parameters.feed
                                 , num = Maybe.withDefault 1 model.parameters.elements - 1
                                 }
 
@@ -353,7 +386,7 @@ view model =
                             Carousel.view
                                 { carousel = model.expositions
                                 , onNext = NextExposition
-                                , viewSlide = viewResearch model.windowSize.w 1 model.parameters.feed
+                                , viewSlide = viewResearch model model.windowSize.w 1 model.parameters.feed
                                 , num = 0
                                 }
                         )
@@ -375,8 +408,8 @@ defaultPadding =
     { top = 0, bottom = 0, left = 0, right = 0 }
 
 
-viewResearch : Int -> Int -> Feed -> List (Maybe Exposition) -> List (Element Msg)
-viewResearch wi columns feed exp =
+viewResearch : Model -> Int -> Int -> Feed -> List (Maybe Exposition) -> List (Element Msg)
+viewResearch model wi columns feed exp =
     let
         --imgHeight = round (toFloat w / toFloat (columns + 1))
         viewExposition =
@@ -426,60 +459,121 @@ viewResearch wi columns feed exp =
             else
                 round (toFloat w * 5 / 4)
     in
-    [ Element.row
-        [ width (fill |> maximum w) -- preserve traditional block layout
-        , height (px heightt)
-        , paddingEach { defaultPadding | left = 0 }
-        , spacing 25
+    case model.parameters.mode of
+        Generate ->
+            [ Element.column [ width fill ]
+                [ Element.row [ Element.centerX, Border.color (rgb255 0 0 0), Border.width 2 ] [ text ("Found " ++ String.fromInt model.results ++ " expositions matching your search criteria.") ]
+                , Element.row
+                    [ width (fill |> maximum w) -- preserve traditional block layout
+                    , height (px heightt)
+                    , paddingEach { defaultPadding | left = 0 }
+                    , spacing 25
 
-        --, Border.color (rgb255 255 0 0)
-        --, Border.width 2
-        --, Border.rounded 3
-        , Element.alignTop
-        ]
-        (List.concat
-            [ [ Input.button
-                    [ width <| px buttonWidth
-                    , height fill
-                    , Element.focused
-                        [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
-                    , centerX
-                    , Element.mouseOver
-                        [ Background.color (Element.rgb 0.97 0.97 0.97)
-                        ]
-                    , Transition.properties
-                        [ Transition.backgroundColor 500 []
-                        ]
-                        |> Element.htmlAttribute
+                    --, Border.color (rgb255 255 0 0)
+                    --, Border.width 2
+                    --, Border.rounded 3
+                    , Element.alignTop
                     ]
-                    { onPress = Just PreviousExposition
-                    , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
-                    }
-              ]
-            , List.map
-                (columns |> (w |> viewExposition))
-                exp
-            , [ Input.button
-                    [ width <| px buttonWidth
-                    , height fill
-                    , Element.focused
-                        [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
-                    , centerX
-                    , Element.mouseOver
-                        [ Background.color (Element.rgb 0.97 0.97 0.97)
+                    (List.concat
+                        [ [ Input.button
+                                [ width <| px buttonWidth
+                                , height fill
+                                , Element.focused
+                                    [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
+                                , centerX
+                                , Element.mouseOver
+                                    [ Background.color (Element.rgb 0.97 0.97 0.97)
+                                    ]
+                                , Transition.properties
+                                    [ Transition.backgroundColor 500 []
+                                    ]
+                                    |> Element.htmlAttribute
+                                ]
+                                { onPress = Just PreviousExposition
+                                , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
+                                }
+                          ]
+                        , List.map
+                            (columns |> (w |> viewExposition))
+                            exp
+                        , [ Input.button
+                                [ width <| px buttonWidth
+                                , height fill
+                                , Element.focused
+                                    [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
+                                , centerX
+                                , Element.mouseOver
+                                    [ Background.color (Element.rgb 0.97 0.97 0.97)
+                                    ]
+                                , Transition.properties
+                                    [ Transition.backgroundColor 500 []
+                                    ]
+                                    |> Element.htmlAttribute
+                                ]
+                                { onPress = Just NextExposition
+                                , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
+                                }
+                          ]
                         ]
-                    , Transition.properties
-                        [ Transition.backgroundColor 500 []
-                        ]
-                        |> Element.htmlAttribute
-                    ]
-                    { onPress = Just NextExposition
-                    , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
-                    }
-              ]
+                    )
+                ]
             ]
-        )
-    ]
+
+        Display ->
+            [ Element.row
+                [ width (fill |> maximum w) -- preserve traditional block layout
+                , height (px heightt)
+                , paddingEach { defaultPadding | left = 0 }
+                , spacing 25
+
+                --, Border.color (rgb255 255 0 0)
+                --, Border.width 2
+                --, Border.rounded 3
+                , Element.alignTop
+                ]
+                (List.concat
+                    [ [ Input.button
+                            [ width <| px buttonWidth
+                            , height fill
+                            , Element.focused
+                                [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
+                            , centerX
+                            , Element.mouseOver
+                                [ Background.color (Element.rgb 0.97 0.97 0.97)
+                                ]
+                            , Transition.properties
+                                [ Transition.backgroundColor 500 []
+                                ]
+                                |> Element.htmlAttribute
+                            ]
+                            { onPress = Just PreviousExposition
+                            , label = Element.image [ width (px 25), height (px 25), rotate 22 ] { src = "assets/shevron.svg", description = "next slide" }
+                            }
+                      ]
+                    , List.map
+                        (columns |> (w |> viewExposition))
+                        exp
+                    , [ Input.button
+                            [ width <| px buttonWidth
+                            , height fill
+                            , Element.focused
+                                [ Border.shadow { color = rgb255 1 1 1, offset = ( 0, 0 ), blur = 0, size = 0 } ]
+                            , centerX
+                            , Element.mouseOver
+                                [ Background.color (Element.rgb 0.97 0.97 0.97)
+                                ]
+                            , Transition.properties
+                                [ Transition.backgroundColor 500 []
+                                ]
+                                |> Element.htmlAttribute
+                            ]
+                            { onPress = Just NextExposition
+                            , label = Element.image [ width (px 25), height (px 25) ] { src = "assets/shevron.svg", description = "next slide" }
+                            }
+                      ]
+                    ]
+                )
+            ]
 
 
 defaultPageFromUrl : String -> String
