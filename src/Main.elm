@@ -12,6 +12,7 @@ import Element.Background as Background
 import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
+import Html exposing (br)
 import Http
 import Json.Decode exposing (Error(..))
 import Random
@@ -515,6 +516,11 @@ viewResearch model wi columns feed exp =
             [ Element.column [ width fill ]
                 [ Element.row [ Element.centerX ] [ paragraph [] [ el [ Font.size 12, Font.bold ] (text ("Found " ++ String.fromInt model.results ++ " expositions matching your search criteria. ")) ] ]
                 , Element.row [ Element.centerX, Border.color (rgb255 0 0 0), Border.width 2 ] [ el [ Font.size 12 ] (text fullUrl) ]
+                , Element.row []
+                    [ paragraph []
+                        [ html <| br [] []
+                        ]
+                    ]
                 , Element.row
                     [ width (fill |> maximum w) -- preserve traditional block layout
                     , height (px heightt)
