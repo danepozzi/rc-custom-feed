@@ -413,6 +413,16 @@ defaultPadding =
     { top = 0, bottom = 0, left = 0, right = 0 }
 
 
+maybeStrToStr : Maybe String -> String
+maybeStrToStr str =
+    case str of
+        Just s ->
+            s
+
+        Nothing ->
+            ""
+
+
 viewResearch : Model -> Int -> Int -> Feed -> List (Maybe Exposition) -> List (Element Msg)
 viewResearch model wi columns feed exp =
     let
@@ -466,11 +476,44 @@ viewResearch model wi columns feed exp =
 
         elem =
             Maybe.withDefault 2 model.parameters.elements
+
+        div =
+            if model.results <= elem then
+                "<div class=\"contdiv" ++ String.fromInt model.results ++ "\"><iframe src=\""
+
+            else
+                "<div class=\"contdiv" ++ String.fromInt elem ++ "\"><iframe src=\""
+
+        endDiv =
+            "\" style=\"border: none;\"></iframe></div>"
+
+        issue =
+            case model.parameters.issue of
+                Just issu ->
+                    String.fromInt issu
+
+                Nothing ->
+                    ""
+
+        kw =
+            maybeStrToStr model.parameters.keyword
+
+        order =
+            maybeStrToStr model.parameters.order
+
+        portal =
+            maybeStrToStr model.parameters.portal
+
+        url =
+            "https://rcdata.org/?keyword=" ++ kw ++ "&elements=" ++ String.fromInt elem ++ "&order=" ++ order ++ "&portal=" ++ portal ++ "&issue=" ++ issue
+
+        fullUrl =
+            div ++ url ++ endDiv
     in
     case model.parameters.mode of
         Generate ->
             [ Element.column [ width fill ]
-                [ Element.row [ Element.centerX, Border.color (rgb255 0 0 0), Border.width 2 ] [ text ("Found " ++ String.fromInt model.results ++ " expositions matching your search criteria.") ]
+                [ Element.row [ Element.centerX, Border.color (rgb255 0 0 0), Border.width 2 ] [ text ("Found " ++ String.fromInt model.results ++ " expositions matching your search criteria. " ++ fullUrl) ]
                 , Element.row
                     [ width (fill |> maximum w) -- preserve traditional block layout
                     , height (px heightt)
