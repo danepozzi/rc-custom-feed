@@ -152,7 +152,7 @@ view model =
             if model.width == "column" then
                 div []
                     [ iframe
-                        [ src url, style "max-width" "1024px", height iframeHeight ]
+                        [ src url, style "width" "100%", style "max-width" "1024px", height iframeHeight ]
                         []
                     ]
 
