@@ -109,6 +109,11 @@ errorToString error =
     Json.Decode.errorToString error
 
 
+withSpacing : List (Html msg) -> List (Html msg)
+withSpacing =
+    List.intersperse (text " ")
+
+
 view : Model -> Html Msg
 view model =
     let
@@ -145,27 +150,31 @@ view model =
                 [ text "Generate Feed" ]
             ]
         , div []
-            [ text "Portal: "
-            , select [ onInput SetPortal ]
-                portalOptions
-            , text "Issue: "
-            , input [ placeholder "ID", value issueID, onInput SetIssueID ] []
-            , text "Feed: "
-            , select [ onInput SetIframeWidth ]
-                (List.map orderOption [ "wide", "column" ])
-            ]
+            (withSpacing
+                [ text "Portal: "
+                , select [ onInput SetPortal ]
+                    portalOptions
+                , text "Issue: "
+                , input [ placeholder "ID", value issueID, onInput SetIssueID ] []
+                , text "Feed: "
+                , select [ onInput SetIframeWidth ]
+                    (List.map orderOption [ "wide", "column" ])
+                ]
+            )
         , div []
-            [ text "Keyword: "
-            , input [ placeholder "Type your keyword here", value model.keyword, onInput UpdateKeyword ] []
-            , text "Number of Elements to Display: "
-            , button [ onClick Decrement ] [ text "-" ]
-            , text (String.fromInt model.elements)
-            , button [ onClick Increment ] [ text "+" ]
-            , text "Order of Elements: "
-            , select [ onInput SetOrder ]
-                (List.map orderOption [ "recent", "random" ])
-            ]
-        , div [] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"><iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
+            (withSpacing
+                [ text "Keyword: "
+                , input [ placeholder "Type your keyword here", value model.keyword, onInput UpdateKeyword ] []
+                , text "Number of Elements to Display: "
+                , button [ onClick Decrement ] [ text "-" ]
+                , text (String.fromInt model.elements)
+                , button [ onClick Increment ] [ text "+" ]
+                , text "Order of Elements: "
+                , select [ onInput SetOrder ]
+                    (List.map orderOption [ "recent", "random" ])
+                ]
+            )
+        , div [ style "width" "100%" ] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"><iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
         , br [] []
         , case model.width of
             "column" ->
