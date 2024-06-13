@@ -513,7 +513,8 @@ viewResearch model wi columns feed exp =
     case model.parameters.mode of
         Generate ->
             [ Element.column [ width fill ]
-                [ Element.row [ Element.centerX, Border.color (rgb255 0 0 0), Border.width 2 ] [ text ("Found " ++ String.fromInt model.results ++ " expositions matching your search criteria. " ++ fullUrl) ]
+                [ Element.row [ Element.centerX ] [ paragraph [] [ el [ Font.size 12, Font.bold ] (text ("Found " ++ String.fromInt model.results ++ " expositions matching your search criteria. ")) ] ]
+                , Element.row [ Element.centerX, Border.color (rgb255 0 0 0), Border.width 2 ] [ el [ Font.size 12 ] (text fullUrl) ]
                 , Element.row
                     [ width (fill |> maximum w) -- preserve traditional block layout
                     , height (px heightt)
