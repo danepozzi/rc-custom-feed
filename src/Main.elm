@@ -508,7 +508,7 @@ viewResearch model wi columns feed exp =
                         , List.map
                             (columns |> (w |> viewExposition))
                             exp
-                        , if model.results < elem then
+                        , if model.results <= elem then
                             []
 
                           else
