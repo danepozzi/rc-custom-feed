@@ -767,7 +767,7 @@ viewTitleAuthorAbstract w columns exp =
                     String.Extra.softEllipsis (round (toFloat w / 5) - chars) exposition.abstract
 
                 fontSize =
-                    max 10 (round (toFloat w / toFloat columns / 20) - columns)
+                    max 12 (round (toFloat w / toFloat columns / 20) - columns)
 
                 --max 16 (round (toFloat w / (toFloat columns / 2) / 20))
                 --22 - columns
