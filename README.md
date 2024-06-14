@@ -4,7 +4,7 @@ This is a collection of tools to support the design of a Research Catalogue port
 
 ## Feed Generation
 
-Exposition feeds can be generated using a dedicated [feed generator](http://rcfeed.rcdata.org/generate/).
+Exposition feeds can be generated using a dedicated [feed generator](https://rcfeed.rcdata.org/generate/).
 
 
 ## Test and Development 
