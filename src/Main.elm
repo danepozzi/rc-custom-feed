@@ -507,7 +507,7 @@ viewResearch model wi columns feed exp =
                 Maybe.withDefault 2.5 val * 100
 
             else
-                1 / toFloat displayedElements
+                1 / toFloat displayedElements * 100
 
         style =
             "\"position: relative; overflow: hidden; width: 100%; padding-top: " ++ String.fromFloat paddingTop ++ "%;\""
