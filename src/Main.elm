@@ -512,7 +512,7 @@ viewResearch model wi columns feed exp =
         --else
         --    "<div class=\"contdiv" ++ String.fromInt elem ++ "\"><iframe src=\""
         endDiv =
-            "\" style=\"border: none;\"></iframe></div>"
+            "\" style=\"position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;\"></iframe></div>"
 
         issue =
             case model.parameters.issue of
