@@ -1,6 +1,7 @@
 module Main exposing (main, release, shuffleWithSeed)
 
 import AppUrl exposing (AppUrl)
+import Array
 import Browser exposing (UrlRequest(..))
 import Browser.Events
 import Browser.Navigation as Nav
@@ -20,6 +21,14 @@ import Random.List exposing (shuffle)
 import Simple.Transition as Transition
 import String.Extra
 import Url exposing (Url)
+
+
+columnRatios =
+    Array.fromList [ 7 / 4, 7 / 8, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
+
+
+wideRatios =
+    [ 1, 2, 3 ]
 
 
 type Release
@@ -478,13 +487,30 @@ viewResearch model wi columns feed exp =
         elem =
             Maybe.withDefault 2 model.parameters.elements
 
-        div =
-            if model.results <= elem then
-                "<div class=\"contdiv" ++ String.fromInt model.results ++ "\"><iframe src=\""
+        displayedElements =
+            min elem model.results
+
+        paddingTop =
+            if displayedElements < 7 then
+                let
+                    val =
+                        Array.get (displayedElements - 1) columnRatios
+                in
+                Maybe.withDefault 2.5 val * 100
 
             else
-                "<div class=\"contdiv" ++ String.fromInt elem ++ "\"><iframe src=\""
+                1 / toFloat displayedElements
 
+        style =
+            "\"position: relative; overflow: hidden; width: 100%; padding-top: " ++ String.fromFloat paddingTop ++ "%;\""
+
+        div =
+            "<div class=\"cont\" style=" ++ style ++ "><iframe src=\""
+
+        --if model.results <= elem then
+        --    "<div class=\"contdiv" ++ String.fromInt model.results ++ "\"><iframe src=\""
+        --else
+        --    "<div class=\"contdiv" ++ String.fromInt elem ++ "\"><iframe src=\""
         endDiv =
             "\" style=\"border: none;\"></iframe></div>"
 

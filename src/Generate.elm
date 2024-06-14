@@ -48,11 +48,6 @@ init _ =
             ( { portal = Nothing, issue = Nothing, width = "wide", keyword = "", elements = 2, order = "recent", portals = Dict.empty, error = Just (errorToString error) }, Cmd.none )
 
 
-citableIframe : String -> Html Msg
-citableIframe url =
-    input [ style "width" "70%", type_ "text", value url ] []
-
-
 type Msg
     = Increment
     | Decrement
