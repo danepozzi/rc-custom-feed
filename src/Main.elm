@@ -245,8 +245,8 @@ init config url navKey =
             , results = 0
             }
 
-        _ =
-            Debug.log "model" model
+        --_ =
+        --    Debug.log "model" model
     in
     ( model, sendQuery cfg.release (Maybe.withDefault "Nothing" model.parameters.keyword) (Maybe.withDefault "Nothing" model.parameters.portal) )
 
@@ -269,9 +269,8 @@ update msg model =
 
         DataReceived (Ok exps) ->
             let
-                _ =
-                    Debug.log "parameters" model.parameters
-
+                --_ =
+                --    Debug.log "parameters" model.parameters
                 expositions =
                     case model.parameters.issue of
                         Just id ->
@@ -280,9 +279,8 @@ update msg model =
                         Nothing ->
                             exps
 
-                _ =
-                    Debug.log "filtered expositions" expositions
-
+                --_ =
+                --    Debug.log "filtered expositions" expositions
                 exp =
                     case model.parameters.order of
                         Just "recent" ->
@@ -665,7 +663,7 @@ viewTitle w columns exp =
     let
         fontSize =
             --max 15 (round (toFloat w / toFloat columns / 20))
-            max 16 (round (toFloat w / (toFloat columns / 2) / 20))
+            max 15 (round (toFloat w / (toFloat columns / 2) / 20))
 
         --22 - columns
         --round (toFloat w / toFloat columns / 20 + 3)
@@ -703,7 +701,7 @@ viewTitleAuthor w columns exp =
     let
         fontSize =
             --max 15 (round (toFloat w / toFloat columns / 20))
-            max 16 (round (toFloat w / toFloat columns / 20))
+            max 15 (round (toFloat w / toFloat columns / 20))
 
         --22 - columns
         --round (toFloat w / toFloat columns / 20 + 3)
@@ -913,6 +911,9 @@ viewExpositionWide w columns exp =
                 -- "smart" scaling
                 imgHeight =
                     round (toFloat w / toFloat (columns + 1))
+
+                _ =
+                    Debug.log "imgHeight" imgHeight
 
                 imageHeight =
                     px imgHeight
