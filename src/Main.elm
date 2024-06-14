@@ -425,7 +425,9 @@ maybeStrToStr str =
 viewResearch : Model -> Int -> Int -> Feed -> List (Maybe Exposition) -> List (Element Msg)
 viewResearch model wi columns feed exp =
     let
-        --imgHeight = round (toFloat w / toFloat (columns + 1))
+        _ =
+            Debug.log "feed: " feed
+
         viewExposition =
             case feed of
                 Wide ->
