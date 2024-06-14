@@ -673,7 +673,7 @@ viewTitle w columns exp =
     let
         fontSize =
             --max 15 (round (toFloat w / toFloat columns / 20))
-            min 24 (max 10 (round (toFloat w / toFloat columns / 20) - columns))
+            min 20 (max 10 (round (toFloat w / toFloat columns / 20) - columns))
 
         --22 - columns
         --round (toFloat w / toFloat columns / 20 + 3)
@@ -711,7 +711,7 @@ viewTitleAuthor w columns exp =
     let
         fontSize =
             --max 15 (round (toFloat w / toFloat columns / 20))
-            min 24 (max 10 (round (toFloat w / toFloat columns / 20) - columns))
+            min 20 (max 10 (round (toFloat w / toFloat columns / 20) - columns))
 
         --22 - columns
         --round (toFloat w / toFloat columns / 20 + 3)
@@ -775,7 +775,7 @@ viewTitleAuthorAbstract w columns exp =
                     String.Extra.softEllipsis (round (toFloat w / 5) - chars) exposition.abstract
 
                 fontSize =
-                    min 24 (max 12 (round (toFloat w / toFloat columns / 20) - columns))
+                    min 20 (max 12 (round (toFloat w / toFloat columns / 20) - columns))
 
                 --max 16 (round (toFloat w / (toFloat columns / 2) / 20))
                 --22 - columns
