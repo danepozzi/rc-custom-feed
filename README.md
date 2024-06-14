@@ -1,8 +1,17 @@
-# RC Custom Feed
+# RC Portal Feed
 
-This is a tool to help creating custom feeds for the Research Catalaogue portals. A "feed" is created in the RC by tagging a group of exposition with a unique keyword. This tool takes one feed and renders it to a carousel. I chose the carousel to keep it compact and with a fixed size, but there might be more clever layouts. The idea is then that portal admnins should be able to create custom landing pages (block pages) for the portals, in which carousels can be embedded with an iframe mirroring https://external.resource/keyword/
+This is a collection of tools to support the design of a Research Catalogue portal homepage. It is specifically aimed at generating exposition feeds that can be embedded in a block page to display the portal research activities. A feed looks like this:
 
-## To Test
+<div style="position: relative;overflow: hidden;width: 100%;padding-top: 43.75%;"><iframe src="https://rcdata.org/?keyword=theater&elements=4&order=recent&portal=&issue=" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;height: 100%;"></div>
+
+## Feed Generation
+
+Exposition feeds can be generated using a dedicated [feed generator](http://rcfeed.rcdata.org/generate/).
+
+
+## Test and Development 
+
+### To Test
 
 __npx elm-watch hot__
 
@@ -10,54 +19,11 @@ python3 json-setup.py
 
 http-server --port 8080 -P http://localhost:8080
 
-## Generate
+### Make Generate Page
 
 elm make src/Generate.elm --output generate/elm.js
 
-## Find and kill json server at port 2019
+### Find and Kill Json Server at Port 2019
 
 sudo lsof -i :2019
 kill -9 <PID>
-
-## TODO
-
-
-- [c] scaling of the arrow
-- [c] add feature for selecting single expositions in url (maybe ask muhlslegels)
-- [c] arrow size ?
-- [d] arrow flash on hover
-- [d] clever iframe height
-- [d] try full width layout
-- [d] add issue as filter by ID
-
-## Iframe Height Question:
-Some ideas to make it somehow responsive:
-- in RC, we use custom CSS to keep iframe at a consistent ratio
-- different feeds need different ratios (for example: a feed with three elements looks good at 16:9, but a feed with 6 elements needs more a 32:9)
-- therefore the "generate" page shall also generate the custom CSS that then shall be copied over to RC exposition
-- both in the CSS and in the elm app we have a breakpoint to switch the feed to single exposition view (the ratio is then probably something like 3:4)
-
-## DONE
-
-- [done] filter for portal ID
-- [done] change message to display when typing keyword
-- [done] look into order recent / random - seems to be gone and always displaying recent
-- [done] test in a block page. testing here: https://www.researchcatalogue.net/view/2639908/2639909
-- [done] horizontal padding shall also be responsive to card size 
-- [done] add a arrow to the left
-- [done] add a new design
-- [done] wire in the proxy
-- [done] add keyd for force image load
-- [done] check that the key is unique for keyed
-- [done] static font size, responsive ellipsis
-- [done] interface for generating the iframe - preview + iframe html code
-
-- At the moment carousel displays one exposition per slide. This might be also customised in the url
-- Alternative layouts?
-
-## Design Considerations
-To have a consistent image rendering, that also looks good:
-- we shall not use screenshots (or keep it as a fallback). the main problem is ratio and scaling, which needs to be "curated"
-- portal admins shall ensure that each featured exposition has a thumbnail. Ideally we shall ask for a specific aspect ratio (1:1?)
-- [done] in feed image height shall be dependent on the number of columns + viewport, to keep the ratio consistent 
-- [done] abstract is hidden / shown based on card scaling
