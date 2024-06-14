@@ -2,8 +2,6 @@
 
 This is a collection of tools to support the design of a Research Catalogue portal homepage. It is specifically aimed at generating exposition feeds that can be embedded in a block page to display the portal research activities. A feed looks like this:
 
-<div style="position: relative;overflow: hidden;width: 100%;padding-top: 43.75%;"><iframe src="https://rcdata.org/?keyword=theater&elements=4&order=recent&portal=&issue=" style="position: absolute;top: 0;left: 0;bottom: 0;right: 0;width: 100%;height: 100%;"></div>
-
 ## Feed Generation
 
 Exposition feeds can be generated using a dedicated [feed generator](http://rcfeed.rcdata.org/generate/).
