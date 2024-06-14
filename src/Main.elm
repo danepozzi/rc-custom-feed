@@ -949,10 +949,10 @@ viewExpositionWide w columns exp =
                                 }
                         }
                     )
-                , if imgHeight < 100 then
+                , if imgHeight < 150 then
                     Element.none
 
-                  else if imgHeight < 150 then
+                  else if imgHeight < 200 then
                     viewTitle w columns exp
 
                   else if imgHeight > 250 then
