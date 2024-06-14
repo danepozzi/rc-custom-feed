@@ -28,7 +28,7 @@ columnRatios =
 
 
 wideRatios =
-    [ 1, 2, 3 ]
+    Array.fromList [ 7 / 4, 7 / 8, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
 
 
 type Release
@@ -490,11 +490,19 @@ viewResearch model wi columns feed exp =
         displayedElements =
             min elem model.results
 
+        ratios =
+            case model.parameters.feed of
+                Column ->
+                    columnRatios
+
+                Wide ->
+                    wideRatios
+
         paddingTop =
             if displayedElements < 7 then
                 let
                     val =
-                        Array.get (displayedElements - 1) columnRatios
+                        Array.get (displayedElements - 1) ratios
                 in
                 Maybe.withDefault 2.5 val * 100
 
