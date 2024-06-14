@@ -510,6 +510,12 @@ viewResearch model wi columns feed exp =
 
         fullUrl =
             div ++ url ++ endDiv
+
+        _ =
+            Debug.log "results: " (String.fromInt model.results)
+
+        _ =
+            Debug.log "elements: " (String.fromInt elem)
     in
     case model.parameters.mode of
         Generate ->
