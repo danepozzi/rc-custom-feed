@@ -665,7 +665,7 @@ viewTitle w columns exp =
     let
         fontSize =
             --max 15 (round (toFloat w / toFloat columns / 20))
-            max 15 (round (toFloat w / (toFloat columns / 2) / 20))
+            max 15 (round (toFloat w / (toFloat columns / 2) / 20) - columns)
 
         --22 - columns
         --round (toFloat w / toFloat columns / 20 + 3)
@@ -683,7 +683,7 @@ viewTitle w columns exp =
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size (fontSize - columns)
+                    , Font.size fontSize
                     , Font.bold
                     ]
                     [ Element.newTabLink
@@ -703,7 +703,7 @@ viewTitleAuthor w columns exp =
     let
         fontSize =
             --max 15 (round (toFloat w / toFloat columns / 20))
-            max 15 (round (toFloat w / toFloat columns / 20))
+            max 15 (round (toFloat w / toFloat columns / 20) - columns)
 
         --22 - columns
         --round (toFloat w / toFloat columns / 20 + 3)
@@ -721,7 +721,7 @@ viewTitleAuthor w columns exp =
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size (fontSize - columns)
+                    , Font.size fontSize
                     , Font.bold
                     ]
                     [ Element.newTabLink
@@ -734,7 +734,7 @@ viewTitleAuthor w columns exp =
                     [ --Background.color (rgb255 0 250 160)
                       Element.centerX
                     , Font.center
-                    , Font.size (fontSize - 1 - columns)
+                    , Font.size (fontSize - 1)
                     , Element.paddingEach { defaultPadding | bottom = 24 }
                     ]
                     [ Element.newTabLink
@@ -767,7 +767,7 @@ viewTitleAuthorAbstract w columns exp =
                     String.Extra.softEllipsis (round (toFloat w / 5) - chars) exposition.abstract
 
                 fontSize =
-                    max 15 (round (toFloat w / toFloat columns / 20))
+                    max 15 (round (toFloat w / toFloat columns / 20) - columns)
 
                 --max 16 (round (toFloat w / (toFloat columns / 2) / 20))
                 --22 - columns
@@ -781,7 +781,7 @@ viewTitleAuthorAbstract w columns exp =
                 [ paragraph
                     [ height fill
                     , Font.center
-                    , Font.size (fontSize - columns)
+                    , Font.size fontSize
 
                     --, Font.size (22 - columns)
                     , Font.bold
@@ -796,7 +796,7 @@ viewTitleAuthorAbstract w columns exp =
                     [ --Background.color (rgb255 0 250 160)
                       Element.centerX
                     , Font.center
-                    , Font.size (fontSize - 1 - columns)
+                    , Font.size (fontSize - 1)
 
                     --, Font.size (20 - columns)
                     , Element.paddingEach { defaultPadding | bottom = 24 }
@@ -810,7 +810,7 @@ viewTitleAuthorAbstract w columns exp =
                 , paragraph
                     [ --, Background.color (rgb255 160 250 100)
                       Element.centerX
-                    , Font.size (fontSize - 2 - columns)
+                    , Font.size (fontSize - 2)
 
                     --, Font.size 15
                     ]
