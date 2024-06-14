@@ -665,7 +665,7 @@ viewTitle w columns exp =
     let
         fontSize =
             --max 15 (round (toFloat w / toFloat columns / 20))
-            max 10 (round (toFloat w / (toFloat columns / 2) / 20) - columns)
+            max 10 (round (toFloat w / toFloat columns / 20) - columns)
 
         --22 - columns
         --round (toFloat w / toFloat columns / 20 + 3)
