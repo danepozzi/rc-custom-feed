@@ -127,7 +127,7 @@ view model =
                     ""
 
         url =
-            "https://rcdata.org/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString ++ "&issue=" ++ issueID ++ "&feed=" ++ model.width
+            "https://rcfeed.rcdata.org/?keyword=" ++ model.keyword ++ "&elements=" ++ String.fromInt model.elements ++ "&order=" ++ model.order ++ "&portal=" ++ portalAsString ++ "&issue=" ++ issueID ++ "&feed=" ++ model.width
 
         maxElementsWithTitle =
             if model.width == "column" then

@@ -85,7 +85,7 @@ stringToMode string =
 baseUrl r =
     case r of
         Live ->
-            "https://rcfeed.sarconference2016.net/"
+            "https://rcfeed.rcdata.org/"
 
         Development ->
             "http://localhost:8080/"
