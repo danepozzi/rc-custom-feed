@@ -540,7 +540,7 @@ viewResearch model wi columns feed exp =
             maybeStrToStr model.parameters.portal
 
         url =
-            "https://rcdata.org/?keyword=" ++ kw ++ "&elements=" ++ String.fromInt elem ++ "&order=" ++ order ++ "&portal=" ++ portal ++ "&issue=" ++ issue
+            "https://rcfeed.rcdata.org/?keyword=" ++ kw ++ "&elements=" ++ String.fromInt elem ++ "&order=" ++ order ++ "&portal=" ++ portal ++ "&issue=" ++ issue
 
         fullUrl =
             div ++ url ++ endDiv
