@@ -24,11 +24,11 @@ import Url exposing (Url)
 
 
 columnRatios =
-    Array.fromList [ 6 / 4, 7 / 8, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
+    Array.fromList [ 6 / 4, 7 / 10, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
 
 
 wideRatios =
-    Array.fromList [ 6 / 4, 7 / 8, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
+    Array.fromList [ 6 / 4, 7 / 10, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
 
 
 type Release
@@ -458,7 +458,7 @@ viewResearch model wi columns feed exp =
 
             else
                 -- this gives following ratios: 7/4 7/8 7/12 7/16 7/20 7/24
-                toFloat w / (4 * toFloat columns) * 7
+                toFloat w * Maybe.withDefault 2.0 (Array.get columns columnRatios)
 
         wideRatio =
             if columns > 10 then
@@ -466,7 +466,7 @@ viewResearch model wi columns feed exp =
 
             else
                 -- this gives following ratios: 7/4 7/8 7/12 7/16 7/20 7/24
-                toFloat w / (4 * toFloat columns) * 7
+                toFloat w * Maybe.withDefault 2.0 (Array.get columns wideRatios)
 
         ratio =
             case feed of
