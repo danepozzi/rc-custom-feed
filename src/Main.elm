@@ -889,7 +889,7 @@ viewMobile w columns exp =
 
                 cols =
                     if w > 675 then
-                        max 2 columns
+                        max 3 columns
 
                     else
                         columns
