@@ -1008,14 +1008,7 @@ viewExpositionColumn w columns exp =
                         }
                     )
                 , if w > 674 then
-                    if columns < 3 then
-                        if w > 1024 then
-                            viewTitleAuthorAbstract w columns exp
-
-                        else
-                            viewTitleAuthor w columns exp
-
-                    else if columns > 6 then
+                    if columns > 6 then
                         Element.none
 
                     else if imgHeight > 250 then
