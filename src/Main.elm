@@ -924,17 +924,21 @@ viewExpositionColumn w columns exp =
                                 }
                         }
                     )
-                , if columns > 6 then
-                    Element.none
+                , if w > 674 then
+                    if columns > 6 then
+                        Element.none
 
-                  else if imgHeight > 250 then
-                    viewTitleAuthorAbstract w columns exp
+                    else if imgHeight > 250 then
+                        viewTitleAuthorAbstract w columns exp
 
-                  else if imgHeight < 150 then
-                    viewTitle w columns exp
+                    else if imgHeight < 150 then
+                        viewTitle w columns exp
+
+                    else
+                        viewTitleAuthor w columns exp
 
                   else
-                    viewTitleAuthor w columns exp
+                    viewTitleAuthorAbstract w columns exp
                 ]
 
         Nothing ->
