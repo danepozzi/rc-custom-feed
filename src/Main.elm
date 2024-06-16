@@ -24,11 +24,11 @@ import Url exposing (Url)
 
 
 columnRatios =
-    Array.fromList [ 7 / 10, 7 / 10, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
+    Array.fromList [ 7 / 9, 7 / 10, 7 / 11, 7 / 15, 7 / 19, 7 / 23 ]
 
 
 wideRatios =
-    Array.fromList [ 7 / 10, 7 / 10, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
+    Array.fromList [ 7 / 9, 7 / 10, 7 / 11, 7 / 15, 7 / 19, 7 / 23 ]
 
 
 type Release
