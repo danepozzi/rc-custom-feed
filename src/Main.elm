@@ -28,7 +28,7 @@ columnRatios =
 
 
 wideRatios =
-    Array.fromList [ 6 / 4, 7 / 10, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
+    Array.fromList [ 7 / 10, 7 / 10, 7 / 12, 7 / 16, 7 / 20, 7 / 24 ]
 
 
 type Release
