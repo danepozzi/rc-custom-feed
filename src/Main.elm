@@ -458,7 +458,7 @@ viewResearch model wi columns feed exp =
 
             else
                 -- this gives following ratios: 7/4 7/8 7/12 7/16 7/20 7/24
-                toFloat w * Maybe.withDefault 2.0 (Array.get columns columnRatios)
+                toFloat w * Maybe.withDefault 2.0 (Array.get (columns - 1) columnRatios)
 
         wideRatio =
             if columns > 10 then
@@ -466,7 +466,7 @@ viewResearch model wi columns feed exp =
 
             else
                 -- this gives following ratios: 7/4 7/8 7/12 7/16 7/20 7/24
-                toFloat w * Maybe.withDefault 2.0 (Array.get columns wideRatios)
+                toFloat w * Maybe.withDefault 2.0 (Array.get (columns - 1) wideRatios)
 
         ratio =
             case feed of
