@@ -870,6 +870,85 @@ viewTitleAuthorAbstract w columns exp =
             Element.text "Waiting for exposition..."
 
 
+viewMobile : Int -> Int -> Maybe Exposition -> Element Msg
+viewMobile w columns exp =
+    case exp of
+        Just exposition ->
+            let
+                title =
+                    String.length exposition.title
+
+                author =
+                    String.length exposition.author.name
+
+                chars =
+                    title + author
+
+                shortAbstract =
+                    String.Extra.softEllipsis (round (toFloat w / 5) - chars) exposition.abstract
+
+                cols =
+                    if w > 675 then
+                        max 2 columns
+
+                    else
+                        columns
+
+                fontSize =
+                    min 20 (max 12 (round (toFloat w / toFloat cols / 20) - columns))
+
+                --max 16 (round (toFloat w / (toFloat columns / 2) / 20))
+                --22 - columns
+                --round (toFloat w / toFloat columns / 20)
+            in
+            column
+                [ Element.centerX
+                , spacing 10
+                , padding (round (toFloat w / 10 / toFloat columns))
+                ]
+                [ paragraph
+                    [ height fill
+                    , Font.center
+                    , Font.size fontSize
+
+                    --, Font.size (22 - columns)
+                    , Font.bold
+                    ]
+                    [ Element.newTabLink
+                        []
+                        { url = exposition.url
+                        , label = Element.text exposition.title
+                        }
+                    ]
+                , paragraph
+                    [ --Background.color (rgb255 0 250 160)
+                      Element.centerX
+                    , Font.center
+                    , Font.size (fontSize - 1)
+
+                    --, Font.size (20 - columns)
+                    , Element.paddingEach { defaultPadding | bottom = 24 }
+                    ]
+                    [ Element.newTabLink
+                        []
+                        { url = authorLink exposition.author.id
+                        , label = Element.text exposition.author.name
+                        }
+                    ]
+                , paragraph
+                    [ --, Background.color (rgb255 160 250 100)
+                      Element.centerX
+                    , Font.size (fontSize - 2)
+
+                    --, Font.size 15
+                    ]
+                    [ Element.text shortAbstract ]
+                ]
+
+        Nothing ->
+            Element.text "Waiting for exposition..."
+
+
 viewExpositionColumn : Int -> Int -> Maybe Exposition -> Element Msg
 viewExpositionColumn w columns exp =
     case exp of
@@ -938,7 +1017,7 @@ viewExpositionColumn w columns exp =
                         viewTitleAuthor w columns exp
 
                   else
-                    viewTitleAuthorAbstract w columns exp
+                    viewMobile w columns exp
                 ]
 
         Nothing ->
