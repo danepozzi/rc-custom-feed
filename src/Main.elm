@@ -806,7 +806,7 @@ viewTitleAuthorAbstract w columns exp =
                     title + author
 
                 shortAbstract =
-                    String.Extra.softEllipsis (round (toFloat w / (toFloat columns * 1.2)) - chars) exposition.abstract
+                    String.Extra.softEllipsis (round (toFloat w / (toFloat columns * 1.5)) - chars) exposition.abstract
 
                 cols =
                     if w > 675 then
@@ -889,7 +889,7 @@ viewMobile w columns exp =
 
                 cols =
                     if w > 675 then
-                        max 3 columns
+                        max 2 columns
 
                     else
                         columns
