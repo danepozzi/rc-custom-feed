@@ -25,6 +25,9 @@ To enable full page view, also add these lines:
 }
 ```
 
+## TODO
+[] filter by exposition ID
+
 ## Test and Development 
 
 ### To Test
