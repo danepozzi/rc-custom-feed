@@ -14,6 +14,7 @@ import Element.Border as Border
 import Element.Font as Font
 import Element.Input as Input
 import Html exposing (br)
+import Html.Attributes
 import Http
 import Json.Decode exposing (Error(..))
 import Random
@@ -515,10 +516,6 @@ viewResearch model wi columns feed exp =
         div =
             "<div class=\"cont\" style=" ++ style ++ "><iframe src=\""
 
-        --if model.results <= elem then
-        --    "<div class=\"contdiv" ++ String.fromInt model.results ++ "\"><iframe src=\""
-        --else
-        --    "<div class=\"contdiv" ++ String.fromInt elem ++ "\"><iframe src=\""
         endDiv =
             "\" style=\"position: absolute; top: 0; left: 0; bottom: 0; right: 0; width: 100%; height: 100%;\"></iframe></div>"
 
@@ -560,6 +557,8 @@ viewResearch model wi columns feed exp =
                     , height (px heightt)
                     , paddingEach { defaultPadding | left = 0 }
                     , spacing 25
+                    , Element.clip
+                    , Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
 
                     --, Border.color (rgb255 255 0 0)
                     --, Border.width 2
@@ -625,6 +624,8 @@ viewResearch model wi columns feed exp =
                 , height (px heightt)
                 , paddingEach { defaultPadding | left = 0 }
                 , spacing 25
+                , Element.clip
+                , Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
 
                 --, Border.color (rgb255 255 0 0)
                 --, Border.width 2
@@ -989,6 +990,9 @@ viewExpositionColumn w columns exp =
                 --, Border.width 2
                 --, Border.rounded 3
                 , Element.alignTop
+
+                --, Element.clip
+                --, Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
                 ]
                 [ el
                     [ --Background.color (rgb255 0 250 160)
@@ -1067,6 +1071,9 @@ viewExpositionWide w columns exp =
                 --, Border.width 2
                 --, Border.rounded 3
                 , Element.alignTop
+
+                --, Element.clip
+                --, Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
                 ]
                 [ el
                     [ --Background.color (rgb255 0 250 160)
