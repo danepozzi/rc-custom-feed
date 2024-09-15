@@ -26,7 +26,13 @@ To enable full page view, also add these lines:
 ```
 
 ## TODO
-[] filter by exposition ID
+[ ] filter by exposition ID
+[ ] Scrollbars in certain browsers, I think it is more likely with less elements
+     - Where are they?
+     - In the generated CSS
+[ ] At least include a link to the readme from the generate page, its nice if the special CSS rule is include on the page.
+[ ] Internal portal fetching (how do we deal with this?)
+[ ] Search options
 
 ## Test and Development 
 
@@ -46,3 +52,34 @@ elm make src/Generate.elm --output generate/elm.js
 
 sudo lsof -i :2019
 kill -9 <PID>
+
+# Deploying to a server
+
+* Create a deploy key, clone the repo from GitHub (or clone using https)
+* Make a new deploy script to copy to the right sub dir in /var/www/html/rcfeed instead of the main html directory
+*￼You are probably going to run this as a subdomain in another domain, for example rcfeed.example.com
+Add a new config file in /etc/apache2/sites-available
+*￼ServerName rcfeed.rcdata.org
+*￼ServerAdmin webmaster@localhost
+*￼DocumentRoot /var/www/html/rcfeed
+*￼the go proxy = <Location /rcproxy>
+
+                ProxyPass http://localhost:3000
+                ProxyPassReverse http://localhost:3000
+
+                Order allow,deny
+                Allow from all
+        </Location>
+￼This go proxy also should be added in the https config file of apache2
+
+* Run the certbot
+￼sudo certbot --apache -d subdomain.example.com
+￼This will also add the redirect rule
+* don't forget to restart apache service
+
+### Running:
+Run deploy script to copy files (you may have to create some dirs like build and generate)
+Run the go server in a linux "screen". 
+
+
+
