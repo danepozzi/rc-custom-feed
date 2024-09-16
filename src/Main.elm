@@ -984,15 +984,13 @@ viewExpositionColumn w columns exp =
             in
             Element.column
                 [ width fill
-                , clipY
 
                 --, Border.color (rgb255 0 0 0)
                 --, Border.width 2
                 --, Border.rounded 3
                 , Element.alignTop
-
-                --, Element.clip
-                --, Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
+                , Element.clip
+                , Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
                 ]
                 [ el
                     [ --Background.color (rgb255 0 250 160)
@@ -1065,15 +1063,13 @@ viewExpositionWide w columns exp =
             in
             Element.column
                 [ width fill
-                , clipY
 
                 --, Border.color (rgb255 0 0 0)
                 --, Border.width 2
                 --, Border.rounded 3
                 , Element.alignTop
-
-                --, Element.clip
-                --, Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
+                , Element.clip
+                , Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
                 ]
                 [ el
                     [ --Background.color (rgb255 0 250 160)
