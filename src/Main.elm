@@ -503,11 +503,11 @@ viewResearch model wi columns feed exp =
 
         paddingTop =
             if displayedElements < 7 then
-                let
-                    val =
-                        Array.get (displayedElements - 1) ratios
-                in
-                Maybe.withDefault 2.5 val * 100
+                --let
+                --    val =
+                --        Array.get (displayedElements - 1) ratios
+                --in
+                7 / toFloat (columns * 4) * 100
 
             else
                 1 / toFloat displayedElements * 100
