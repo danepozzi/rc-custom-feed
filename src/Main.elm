@@ -809,8 +809,13 @@ viewTitleAuthorAbstract w columns exp =
                     title + author
 
                 shortAbstract =
+                    let
+                        factor =
+                            logBase 1.9 (toFloat w)
+                    in
                     if columns > 2 then
-                        String.Extra.softEllipsis (round (toFloat w / (toFloat columns * 1.2)) - chars) exposition.abstract
+                        String.Extra.softEllipsis ((round (factor / toFloat columns * 65) * 2) - chars) exposition.abstract
+                        --String.Extra.softEllipsis (round (toFloat w / (7 / toFloat columns * 4) * 2) - chars) exposition.abstract
 
                     else
                         String.Extra.softEllipsis (round (toFloat w / 3) - chars) exposition.abstract
@@ -892,7 +897,11 @@ viewMobile w columns exp =
                     title + author
 
                 shortAbstract =
-                    String.Extra.softEllipsis (round (toFloat w / 5) - chars) exposition.abstract
+                    let
+                        factor =
+                            logBase 1.9 (toFloat w)
+                    in
+                    String.Extra.softEllipsis (round factor * 50 - chars) exposition.abstract
 
                 cols =
                     if w > 675 then
