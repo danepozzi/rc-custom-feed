@@ -201,10 +201,11 @@ view model =
                     (List.map orderOption [ "recent", "random" ])
                 ]
             )
+        , br [] []
         , div []
             [ text "Please note that page level CSS is required for the iframe to be responsive. This is available at "
             , a [ attribute "href" "https://github.com/SocietyForArtisticResearch/rc-custom-feed/blob/master/README.md#page-level-css" ]
-                [ text "this link"
+                [ text "here"
                 , text "."
                 ]
             ]
