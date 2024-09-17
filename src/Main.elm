@@ -1024,10 +1024,10 @@ viewExpositionColumn w columns exp =
                     if columns > 6 then
                         Element.none
 
-                    else if imgHeight > 250 then
+                    else if imgHeight > 150 then
                         viewTitleAuthorAbstract w columns exp
 
-                    else if imgHeight < 150 then
+                    else if imgHeight < 100 then
                         viewTitle w columns exp
 
                     else
