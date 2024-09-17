@@ -502,7 +502,10 @@ viewResearch model wi columns feed exp =
                     wideRatios
 
         paddingTop =
-            if displayedElements < 7 then
+            if displayedElements < 3 then
+                7 / toFloat (3 * 4) * 100
+
+            else if displayedElements < 7 then
                 --let
                 --    val =
                 --        Array.get (displayedElements - 1) ratios
@@ -1024,7 +1027,7 @@ viewExpositionColumn w columns exp =
                     if columns > 6 then
                         Element.none
 
-                    else if imgHeight > 230 then
+                    else if imgHeight > 250 then
                         viewTitleAuthorAbstract w columns exp
 
                     else if imgHeight < 150 then
