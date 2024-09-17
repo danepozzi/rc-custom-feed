@@ -6,7 +6,7 @@ This is a collection of tools to support the design of a Research Catalogue port
 
 Exposition feeds can be generated using a dedicated [feed generator](https://rcfeed.rcdata.org/generate/). Here you find some controls to generate the feed, a preview section and a box with the generated HTML code. Copy the HTML code to an HTML element in your block exposition to embed the feed in the block page.
 
-## Raw CSS
+## Page-level CSS
 The following style needs to be copied over to the *raw css* section in the exposition editor. 
 
 ```
