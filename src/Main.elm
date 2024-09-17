@@ -457,8 +457,10 @@ viewResearch model wi columns feed exp =
             if columns > 6 then
                 toFloat w / toFloat columns
 
+            else if columns < 3 then
+                toFloat w * (7 / toFloat (3 * 4))
+
             else
-                -- this gives following ratios: 7/4 7/8 7/12 7/16 7/20 7/24
                 toFloat w * (7 / toFloat (columns * 4))
 
         --Maybe.withDefault 2.0 (Array.get (columns - 1) columnRatios)
@@ -466,8 +468,10 @@ viewResearch model wi columns feed exp =
             if columns > 10 then
                 toFloat w / toFloat columns
 
+            else if columns < 3 then
+                toFloat w * (7 / toFloat (3 * 4))
+
             else
-                -- this gives following ratios: 7/4 7/8 7/12 7/16 7/20 7/24
                 toFloat w * (7 / toFloat (columns * 4))
 
         --Maybe.withDefault 2.0 (Array.get (columns - 1) wideRatios)
