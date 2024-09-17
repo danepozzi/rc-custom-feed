@@ -159,7 +159,10 @@ view model =
                     ]
 
         iframeHeight =
-            if model.elements < maxElementsWithTitle then
+            if model.elements < 3 then
+                round (7 / (4 * 3) * heightMultiplier)
+
+            else if model.elements < maxElementsWithTitle then
                 round (7 / (4 * toFloat model.elements) * heightMultiplier)
 
             else
