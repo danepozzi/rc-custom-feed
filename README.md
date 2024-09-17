@@ -27,10 +27,10 @@ To enable full page view, also add these lines:
 
 ## TODO
 [ ] filter by exposition ID
-[ ] Scrollbars in certain browsers, I think it is more likely with less elements
+[X] Scrollbars in certain browsers, I think it is more likely with less elements
      - Where are they?
      - In the generated CSS
-[ ] At least include a link to the readme from the generate page, its nice if the special CSS rule is include on the page.
+[X] At least include a link to the readme from the generate page, its nice if the special CSS rule is include on the page.
 [ ] Internal portal fetching (how do we deal with this?)
 [ ] Search options
 
