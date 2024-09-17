@@ -201,6 +201,13 @@ view model =
                     (List.map orderOption [ "recent", "random" ])
                 ]
             )
+        , div []
+            [ text "Please note that page level CSS is required for the iframe to be responsive. This is available at "
+            , a [ attribute "href" "https://github.com/SocietyForArtisticResearch/rc-custom-feed/blob/master/README.md#page-level-css" ]
+                [ text "this link"
+                , text "."
+                ]
+            ]
 
         --, div [ style "width" "100%" ] [ citableIframe ("<div class=\"contdiv" ++ String.fromInt model.elements ++ "\"><iframe src=" ++ q url ++ " style=\"border: none;\"></iframe></div>") ]
         , br [] []
