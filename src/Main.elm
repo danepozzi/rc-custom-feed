@@ -818,7 +818,7 @@ viewTitleAuthorAbstract w columns exp =
                 shortAbstract =
                     let
                         factor =
-                            logBase 0.8 (toFloat w / toFloat columns)
+                            logBase 2.8 (toFloat w / toFloat columns)
                     in
                     if columns > 2 then
                         String.Extra.softEllipsis (round (factor * 50) - chars) exposition.abstract
