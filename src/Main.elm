@@ -566,9 +566,9 @@ viewResearch model wi columns feed exp =
                     , height (px heightt)
                     , paddingEach { defaultPadding | left = 0 }
                     , spacing 25
-                    , Element.clip
-                    , Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
 
+                    --, Element.clip
+                    --, Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
                     --, Border.color (rgb255 255 0 0)
                     --, Border.width 2
                     --, Border.rounded 3
@@ -633,9 +633,9 @@ viewResearch model wi columns feed exp =
                 , height (px heightt)
                 , paddingEach { defaultPadding | left = 0 }
                 , spacing 25
-                , Element.clip
-                , Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
 
+                --, Element.clip
+                --, Element.htmlAttribute (Html.Attributes.style "flex-shrink" "1")
                 --, Border.color (rgb255 255 0 0)
                 --, Border.width 2
                 --, Border.rounded 3
