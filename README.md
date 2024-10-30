@@ -25,6 +25,14 @@ To enable full page view, also add these lines:
 }
 ```
 
+To disable the menu bar:
+
+```
+#navigation {
+    display: none;
+}
+```
+
 ## TODO
 [ ] filter by exposition ID
 [X] Scrollbars in certain browsers, I think it is more likely with less elements
