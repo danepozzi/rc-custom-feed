@@ -507,17 +507,17 @@ viewResearch model wi columns feed exp =
 
         paddingTop =
             if displayedElements < 3 then
-                7 / toFloat (3 * 4) * 100
+                (7 / toFloat (3 * 4) * 100) + 1
 
             else if displayedElements < 7 then
                 --let
                 --    val =
                 --        Array.get (displayedElements - 1) ratios
                 --in
-                7 / toFloat (columns * 4) * 100
+                (7 / toFloat (columns * 4) * 100) + 1
 
             else
-                1 / toFloat displayedElements * 100
+                (1 / toFloat displayedElements * 100) + 1
 
         style =
             "\"position: relative; overflow: hidden; width: 100%; padding-top: " ++ String.fromFloat paddingTop ++ "%;\""
