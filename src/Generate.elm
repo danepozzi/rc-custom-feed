@@ -8,6 +8,7 @@ import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 import Json.Decode exposing (Decoder, decodeString, dict, int)
 import Portals exposing (portalsList)
+import Task exposing (Task)
 
 
 type alias PortalDict =
@@ -39,10 +40,13 @@ init _ =
 
         decodedPortals =
             decodeString portalDecoder jsonString
+
+        setPortalCmd =
+            Task.perform (always (SetPortal "All Portals")) (Task.succeed ())
     in
     case decodedPortals of
         Ok portals ->
-            ( { portal = Nothing, issue = Nothing, width = "wide", keyword = "", elements = 4, order = "recent", portals = portals, error = Nothing }, Cmd.none )
+            ( { portal = Just -999, issue = Nothing, width = "wide", keyword = "", elements = 4, order = "recent", portals = portals, error = Nothing }, setPortalCmd )
 
         Err error ->
             ( { portal = Nothing, issue = Nothing, width = "wide", keyword = "", elements = 2, order = "recent", portals = Dict.empty, error = Just (errorToString error) }, Cmd.none )
@@ -169,7 +173,7 @@ view model =
                 round (1 / toFloat model.elements * heightMultiplier)
 
         portalOptions =
-            List.map portalOption (Dict.keys model.portals)
+            List.map (portalOption model.portals model.portal) (Dict.keys model.portals)
     in
     div [ align "center" ]
         [ div []
@@ -221,9 +225,25 @@ q str =
     "\"" ++ str ++ "\""
 
 
-portalOption : String -> Html msg
-portalOption portalName =
-    option [ value portalName ] [ text portalName ]
+portalOption : PortalDict -> Maybe Int -> String -> Html msg
+portalOption portals selectedPortal portalName =
+    let
+        -- Check if the current portal is selected
+        isSelected =
+            case selectedPortal of
+                Just selectedId ->
+                    -- Retrieve the portal ID from the dictionary and check if it matches
+                    case getPortalId portals portalName of
+                        Just portalId ->
+                            portalId == selectedId
+
+                        Nothing ->
+                            False
+
+                Nothing ->
+                    False
+    in
+    option [ value portalName, selected isSelected ] [ text portalName ]
 
 
 getPortalId : PortalDict -> String -> Maybe Int
@@ -240,7 +260,11 @@ portalIdToString : Maybe Int -> String
 portalIdToString id =
     case id of
         Just int ->
-            String.fromInt int
+            if int == -999 then
+                ""
+
+            else
+                String.fromInt int
 
         Nothing ->
             ""
